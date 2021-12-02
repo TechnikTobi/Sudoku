@@ -1,4 +1,4 @@
-package org.prisching.tobias.Sudoku;
+package org.prisching.tobias.Sudoku.main;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
