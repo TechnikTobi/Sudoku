@@ -17,5 +17,20 @@ public class Position {
 	public int getY() {
 		return this.y;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(this == obj) {
+			return true;
+		}
+		
+		if(obj instanceof Position) {
+			Position objPos = (Position) obj;
+			return (this.getX() == objPos.getX() && this.getY() == objPos.getY());
+		}
+		
+		return false;
+	}
 	
 }
