@@ -1,13 +1,17 @@
 package org.prisching.tobias.Sudoku.board;
 
+import org.prisching.tobias.Sudoku.game.player.PlayerColor;
+
 public class Field {
 
 	private Position pos;
 	private int value;
+	private PlayerColor color;
 	
 	public Field(Position pos, int value) {
 		this.pos = pos;
 		this.value = value;
+		this.color = PlayerColor.getDefaultColor();
 	}
 	
 	public Field(Position pos) {
@@ -32,6 +36,14 @@ public class Field {
 	
 	public void setValue(int value) {
 		this.value = value;
+	}
+	
+	public PlayerColor getColor() {
+		return this.color;
+	}
+	
+	public void setColor(PlayerColor color) {
+		this.color = color;
 	}
 	
 }
