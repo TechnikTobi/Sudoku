@@ -24,3 +24,7 @@
 	height: 5px;
 	display: inline-block;
 }
+
+#board {
+	/* visibility: hidden; */
+}
