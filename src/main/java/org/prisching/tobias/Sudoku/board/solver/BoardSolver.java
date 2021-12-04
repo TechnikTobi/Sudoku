@@ -19,11 +19,10 @@ public class BoardSolver {
 	
 	private static int recursiveSolve(Board board) {
 	
-		if(BoardValidator.getValidator().validate(board) == false) return 0;
+		BoardInfoExtractor extractor = new BoardInfoExtractor(board);
 		
-		if(board.getAllFields().values().stream().filter(f -> f.getValue() == 0).findAny().isEmpty()) {
-			return 1;
-		}
+		if(BoardValidator.getValidator().validate(board) == false) return 0;
+		if(extractor.isFull()) return 1;
 		
 		for(int i = 0; i < Board.MAX_X*Board.MAX_Y; i++) {
 			
@@ -34,7 +33,6 @@ public class BoardSolver {
 			if(board.getField(pos).getValue() != 0) continue;
 			
 			int returnValue = 0;
-			BoardInfoExtractor extractor = new BoardInfoExtractor(board);
 			List<Integer> numbers = IntStream.range(1, 10).boxed().collect(Collectors.toList());
 			Collections.sort(numbers);
 			

@@ -29,14 +29,10 @@ public class BoardGenerator {
 		BoardInfoExtractor extractor = new BoardInfoExtractor(board);
 		
 		// If the board is invalid to begin with, return null
-		if(BoardValidator.getValidator().validate(board) == false) {
-			return null;
-		}
+		if(BoardValidator.getValidator().validate(board) == false) return null;
 		
 		// If there is no empty field, return the board as we are done (and it is already validated!)
-		if(board.getAllFields().values().stream().filter(f -> f.getValue() == 0).findAny().isEmpty()) {
-			return board;
-		}
+		if(extractor.isFull()) return board;
 		
 		for(int i = 0; i < MAX_V*MAX_V; i++) {
 			
