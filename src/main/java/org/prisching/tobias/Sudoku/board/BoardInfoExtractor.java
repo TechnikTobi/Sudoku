@@ -13,6 +13,10 @@ public class BoardInfoExtractor {
 		this.board = board;
 	}
 	
+	public boolean isFull() {
+		return this.board.getAllFields().values().stream().filter(f -> f.getValue() == 0).findAny().isEmpty();
+	}
+	
 	public Position getMaxXPos() {
 		try {
 			return this.board.getAllFields()
