@@ -9,7 +9,7 @@ public class Player {
 	public Player(String name) {
 		this.playerID = new PlayerID();
 		this.name = name;
-		this.color = new PlayerColor();
+		this.color = PlayerColor.newPlayerColor();
 	}
 	
 	public String getName() {
