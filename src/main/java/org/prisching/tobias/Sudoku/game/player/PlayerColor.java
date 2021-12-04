@@ -9,25 +9,33 @@ public class PlayerColor {
 	private int green;
 	private int blue;
 	
-	public PlayerColor() {
-		final int R = (int)(Math.random()*256);
-        final int G = (int)(Math.random()*256);
-        final int B= (int)(Math.random()*256);
-        Color color = new Color(R, G, B); //random color, but can be bright or dull
-
-        //to get rainbow, pastel colors
-        Random random = new Random();
-        final float hue = random.nextFloat();
-        final float saturation = 0.9f;//1.0 for brilliant, 0.0 for dull
-        final float luminance = 1.0f; //1.0 for brighter, 0.0 for black
-        color = Color.getHSBColor(hue, saturation, luminance);
-        
-        this.red = color.getRed();
-        this.green = color.getGreen();
-        this.blue = color.getBlue();
+	private PlayerColor(int red, int green, int blue) {
+		this.red = red;
+		this.green = green;
+		this.blue = blue;
 	}
 	
 	public String getHexString() {
 		return Integer.toHexString(this.red) + Integer.toHexString(this.green) + Integer.toHexString(this.blue);
+	}
+	
+	public static PlayerColor newPlayerColor() {
+		int R = (int)(Math.random()*256);
+        int G = (int)(Math.random()*256);
+        int B= (int)(Math.random()*256);
+        Color color = new Color(R, G, B); //random color, but can be bright or dull
+
+        //to get rainbow, pastel colors
+        Random random = new Random();
+        float hue = random.nextFloat();
+        float saturation = 0.9f;//1.0 for brilliant, 0.0 for dull
+        float luminance = 1.0f; //1.0 for brighter, 0.0 for black
+        color = Color.getHSBColor(hue, saturation, luminance);
+		
+		return new PlayerColor(color.getRed(), color.getGreen(), color.getBlue());
+	}
+	
+	public static PlayerColor getDefaultColor() {
+		return new PlayerColor(255, 255, 255);
 	}
 }
