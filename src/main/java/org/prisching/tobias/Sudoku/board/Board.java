@@ -36,10 +36,6 @@ public class Board {
 		}
 	}
 	
-	public void addField(Field field) {
-		this.fields.put(field.getPos(), field);
-	}
-	
 	public Field getField (Position pos) {
 		return this.fields.get(pos);
 	}
