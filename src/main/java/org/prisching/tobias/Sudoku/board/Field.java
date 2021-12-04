@@ -21,11 +21,11 @@ public class Field {
 	public Field(int x, int y) {
 		this(x, y, 0);
 	}
-	
+
 	public Position getPos() {
 		return this.pos;
 	}
-		
+
 	public int getValue() {
 		return this.value;
 	}
