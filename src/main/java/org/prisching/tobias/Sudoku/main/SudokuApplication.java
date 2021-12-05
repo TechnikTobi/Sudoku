@@ -35,24 +35,6 @@ public class SudokuApplication {
 			System.out.println(e.getMessage());
 		}
 		
-		
-		/*
-		Board board = BoardGenerator.generateFullBoard();
-		if(board != null) {
-			System.out.println("Success!");
-			BoardInfoExtractor extractor = new BoardInfoExtractor(board);
-			Board finalBoard = BoardGenerator.generateFinalBoard(board, 40);
-			BoardInfoExtractor finalExtractor = new BoardInfoExtractor(finalBoard);
-			extractor.print();
-			System.out.println(" ");
-			finalExtractor.print();
-		}else {
-			System.out.println("._.");
-		}
-		*/
-		
-		//BoardInfoExtractor extractor = new BoardInfoExtractor(BoardGenerator.generateRandomPlayfield());
-		//extractor.print();
 	}
 
 }
