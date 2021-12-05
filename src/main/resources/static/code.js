@@ -20,8 +20,9 @@ function registerPlayer() {
 	request.onreadystatechange = (event) => {
 		if(request.readyState == 4) {
 			// Get PlayerID and save it
+			console.log(request.responseText);
 			const responseData = JSON.parse(request.responseText);
-			playerID = responseData["playerID"];
+			playerID = responseData["PlayerID"];
 			console.log(playerID);
 
 			client = Stomp.over(new SockJS("/websocket"));

@@ -3,6 +3,8 @@ package org.prisching.tobias.Sudoku.game;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.prisching.tobias.Sudoku.game.player.PlayerID;
+
 public class GameControllerManager {
 
 	private Map<GameID, GameController> games;
@@ -11,8 +13,8 @@ public class GameControllerManager {
 		this.games = new HashMap<GameID, GameController>();
 	}
 	
-	public GameID createGame(String name, int difficulty) {
-		GameController newGame = new GameController(name, difficulty);
+	public GameID createGame(PlayerID playerID, String name, int difficulty) {
+		GameController newGame = new GameController(playerID, name, difficulty);
 		this.games.put(newGame.getID(), newGame);
 		return newGame.getID();
 	}

@@ -6,8 +6,12 @@ public class PlayerID {
 
 	private String identifier;
 
+	public PlayerID(String identifier) {
+		this.identifier = identifier;
+	}
+	
 	public PlayerID() {
-		this.identifier = UUID.randomUUID().toString();
+		this(UUID.randomUUID().toString());
 	}
 
 	public String getPlayerID() {

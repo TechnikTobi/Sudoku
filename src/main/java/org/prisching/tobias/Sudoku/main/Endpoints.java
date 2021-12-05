@@ -2,15 +2,28 @@ package org.prisching.tobias.Sudoku.main;
 
 import java.util.Map;
 
+import javax.validation.Valid;
+
+import org.prisching.tobias.Sudoku.game.GameController;
 import org.prisching.tobias.Sudoku.game.GameControllerManager;
 import org.prisching.tobias.Sudoku.game.GameID;
 import org.prisching.tobias.Sudoku.game.player.PlayerManager;
+import org.prisching.tobias.Sudoku.messages.*;
+import org.prisching.tobias.Sudoku.messages.incoming.*;
+import org.prisching.tobias.Sudoku.messages.outgoing.GameCreationResponse;
+import org.prisching.tobias.Sudoku.messages.outgoing.PlayerRegistrationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
+
 import org.springframework.stereotype.Controller;
+
+import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,37 +51,41 @@ public class Endpoints {
 	}
 	
 	@PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
-	private @ResponseBody String register(@RequestBody String data) {
-		
-		Map<String, Object> values = this.decodeJSON(data);
-		
-		if(values != null) {
-			if(!values.containsKey(NAME)) return null;
-			return encodeJSON(this.playerManager.addPlayer((String)values.get(NAME))); 
-		}
-		
-		return null;
+	private @ResponseBody PlayerRegistrationResponse register(@Validated @RequestBody PlayerRegistrationRequest request) {
+		return new PlayerRegistrationResponse(this.playerManager.addPlayer(request.getName()));
 	}
 	
 	@PostMapping(value = "/createGame", consumes = "application/json", produces = "application/json")
-	private @ResponseBody String createGame(@RequestBody String data) {
+	private @ResponseBody GameCreationResponse createGame(@Validated @RequestBody GameCreationRequest request) {
 		
+		/*
 		Map<String, Object> values = this.decodeJSON(data);
 		
 		if(values != null) {
 			if(!values.containsKey(NAME)) return null;
 			if(!values.containsKey(DIFFICULTY)) return null;
-			GameID newGameID = this.gameControllerManager.createGame((String)values.get(NAME), ((Integer) values.get(DIFFICULTY)).intValue());
-			this.messagingTemplate.convertAndSend("/games", newGameID);
-			return encodeJSON(newGameID); 
+			GameCreation message = new GameCreation(null, this.gameControllerManager.createGame((String)values.get(NAME), ((Integer) values.get(DIFFICULTY)).intValue()));
+			this.messagingTemplate.convertAndSend("/games", message);
+			//return encodeJSON(newGameID);
+			return message;
 		}
 		
 		return null;
+		*/
+		
+		GameID newGameID = this.gameControllerManager.createGame(request.getPlayerID(), request.getName(), request.getDifficulty());
+		GameController newGame = this.gameControllerManager.getGame(newGameID);
+		String newGameMasterName = this.playerManager.getPlayer(newGame.getMaster()).getName();
+		
+		GameCreationResponse message = new GameCreationResponse(newGameMasterName, newGame);
+		this.messagingTemplate.convertAndSend("/games", message);
+		return message;
 	}
 	
-	@MessageMapping("/game/{gameID}")
-	private void processMove(@PathVariable GameID gameID) {
-		
+	@MessageMapping(value = "/game/{gameID}")
+	private void processMove(@DestinationVariable("gameID") GameID gameID) {
+		System.out.println("PROCESS MOVE FOR " + gameID.getGameID());
+		this.gameControllerManager.getGame(gameID).setValue(null, null, 0);
 	}
 	
 	
