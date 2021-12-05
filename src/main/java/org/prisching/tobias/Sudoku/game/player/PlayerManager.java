@@ -1,6 +1,8 @@
 package org.prisching.tobias.Sudoku.game.player;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.HashMap;
 
 public class PlayerManager {
@@ -19,5 +21,9 @@ public class PlayerManager {
 	
 	public Player getPlayer(PlayerID id) {
 		return this.players.get(id);
+	}
+	
+	public List<Player> getAllPlayers() {
+		return this.players.values().stream().collect(Collectors.toList());
 	}
 }
