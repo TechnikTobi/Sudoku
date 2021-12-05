@@ -32,6 +32,8 @@ public class BoardManager {
 		return EPlacementState.INVALID;
 	}
 	
-	
+	public Board getPlayBoard() {
+		return this.playBoard;
+	}
 	
 }
