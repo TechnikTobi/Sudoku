@@ -1,17 +1,17 @@
 package org.prisching.tobias.Sudoku.main;
 
-import java.util.Map;
-
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletResponse;
 
 import org.prisching.tobias.Sudoku.game.GameController;
 import org.prisching.tobias.Sudoku.game.GameControllerManager;
 import org.prisching.tobias.Sudoku.game.GameID;
 import org.prisching.tobias.Sudoku.game.player.PlayerManager;
-import org.prisching.tobias.Sudoku.messages.*;
 import org.prisching.tobias.Sudoku.messages.incoming.*;
-import org.prisching.tobias.Sudoku.messages.outgoing.GameCreationResponse;
-import org.prisching.tobias.Sudoku.messages.outgoing.PlayerRegistrationResponse;
+import org.prisching.tobias.Sudoku.messages.outgoing.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -21,26 +21,23 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 
 import org.springframework.stereotype.Controller;
-
 import org.springframework.validation.annotation.Validated;
-
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @Controller
 @RequestMapping(value = "/app")
 public class Endpoints {
 
+	private static final String APP_JSON = "application/json";
+	
 	private PlayerManager playerManager;
 	private GameControllerManager gameControllerManager;
-	
-	private static final String NAME = "name";
-	private static final String DIFFICULTY = "difficulty";
+	private Logger logger;
 	
 	@Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -48,38 +45,41 @@ public class Endpoints {
 	public Endpoints() {
 		this.playerManager = new PlayerManager();
 		this.gameControllerManager = new GameControllerManager();
+		this.logger = LoggerFactory.getLogger(Endpoints.class);
 	}
 	
-	@PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
+	@PostMapping(value = "/register", consumes = APP_JSON, produces = APP_JSON)
 	private @ResponseBody PlayerRegistrationResponse register(@Validated @RequestBody PlayerRegistrationRequest request) {
-		return new PlayerRegistrationResponse(this.playerManager.addPlayer(request.getName()));
+		logger.info("Received request: " + request.getPrintString());
+		return new PlayerRegistrationResponse(this.playerManager.addPlayer(request.getPlayerName()));
 	}
 	
-	@PostMapping(value = "/createGame", consumes = "application/json", produces = "application/json")
+	@PostMapping(value = "/createGame", consumes = APP_JSON, produces = APP_JSON)
 	private @ResponseBody GameCreationResponse createGame(@Validated @RequestBody GameCreationRequest request) {
 		
-		/*
-		Map<String, Object> values = this.decodeJSON(data);
+		logger.info("Received request: " + request.getPrintString());
 		
-		if(values != null) {
-			if(!values.containsKey(NAME)) return null;
-			if(!values.containsKey(DIFFICULTY)) return null;
-			GameCreation message = new GameCreation(null, this.gameControllerManager.createGame((String)values.get(NAME), ((Integer) values.get(DIFFICULTY)).intValue()));
-			this.messagingTemplate.convertAndSend("/games", message);
-			//return encodeJSON(newGameID);
-			return message;
+		if(this.playerManager.getPlayer(request.getPlayerID()) == null) {
+			throw new RuntimeException("huhu");
 		}
 		
-		return null;
-		*/
-		
-		GameID newGameID = this.gameControllerManager.createGame(request.getPlayerID(), request.getName(), request.getDifficulty());
+		GameID newGameID = this.gameControllerManager.createGame(request.getPlayerID(), request.getGameName(), request.getDifficulty());
 		GameController newGame = this.gameControllerManager.getGame(newGameID);
 		String newGameMasterName = this.playerManager.getPlayer(newGame.getMaster()).getName();
-		
 		GameCreationResponse message = new GameCreationResponse(newGameMasterName, newGame);
+		
 		this.messagingTemplate.convertAndSend("/games", message);
 		return message;
+	}
+	
+	@PostMapping(value = "/joinGame", consumes = APP_JSON, produces = APP_JSON)
+	private @ResponseBody Response joinGame(@Validated @RequestBody Request request) {
+		return null;
+	}
+	
+	@GetMapping(value = "/getGamesList", produces = APP_JSON)
+	private @ResponseBody Response getGamesList() {
+		return new GamesList(this.gameControllerManager.getAllGames(), this.playerManager.getAllPlayers());
 	}
 	
 	@MessageMapping(value = "/game/{gameID}")
@@ -88,23 +88,9 @@ public class Endpoints {
 		this.gameControllerManager.getGame(gameID).setValue(null, null, 0);
 	}
 	
-	
-	private String encodeJSON(Object data) {
-		try {
-			return (new ObjectMapper()).writeValueAsString(data);
-		}catch(Exception e) {
-			System.out.println("JSON encoding error: " + e.getMessage());
-		}
-		return null;
+	@ExceptionHandler({ RuntimeException.class })
+	public @ResponseBody String handleException(Exception exception, HttpServletResponse response) {
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		return exception.getMessage();
 	}
-	
-	private Map<String, Object> decodeJSON(String jsonData) {
-		try {
-			return (new ObjectMapper()).readValue(jsonData, Map.class);
-		}catch(Exception e) {
-			System.out.println("JSON decoding error: " + e.getMessage());
-		}
-		return null;
-	}
-	
 }
