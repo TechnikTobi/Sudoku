@@ -40,13 +40,8 @@ public class Board {
 		return this.fields.get(pos);
 	}
 	
-	@JsonIgnore
 	public Map<Position, Field> getAllFields() {
 		return this.fields;
-	}
-	
-	public List<Field> getFields() {
-		return this.fields.values().stream().collect(Collectors.toList());
 	}
 	
 }
