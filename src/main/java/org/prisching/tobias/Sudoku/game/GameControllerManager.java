@@ -1,7 +1,9 @@
 package org.prisching.tobias.Sudoku.game;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.HashMap;
+import java.util.List;
 
 import org.prisching.tobias.Sudoku.game.player.PlayerID;
 
@@ -21,6 +23,10 @@ public class GameControllerManager {
 	
 	public GameController getGame(GameID id) {
 		return this.games.get(id);
+	}
+	
+	public List<GameController> getAllGames() {
+		return this.games.values().stream().collect(Collectors.toList());
 	}
 	
 }
