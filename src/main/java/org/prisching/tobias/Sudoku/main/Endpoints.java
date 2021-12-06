@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.prisching.tobias.Sudoku.game.GameController;
 import org.prisching.tobias.Sudoku.game.GameControllerManager;
 import org.prisching.tobias.Sudoku.game.GameID;
+import org.prisching.tobias.Sudoku.game.player.PlayerID;
 import org.prisching.tobias.Sudoku.game.player.PlayerManager;
 import org.prisching.tobias.Sudoku.messages.incoming.*;
 import org.prisching.tobias.Sudoku.messages.outgoing.*;
@@ -59,11 +60,13 @@ public class Endpoints {
 		
 		logger.info("Received request: " + request.getPrintString());
 		
-		if(this.playerManager.getPlayer(request.getPlayerID()) == null) {
+		PlayerID playerID = new PlayerID(request.getPlayerID().getIdentifier());
+		
+		if(this.playerManager.getPlayer(playerID) == null) {
 			throw new RuntimeException("huhu");
 		}
 		
-		GameID newGameID = this.gameControllerManager.createGame(request.getPlayerID(), request.getGameName(), request.getDifficulty());
+		GameID newGameID = this.gameControllerManager.createGame(playerID, request.getGameName(), request.getDifficulty());
 		GameController newGame = this.gameControllerManager.getGame(newGameID);
 		String newGameMasterName = this.playerManager.getPlayer(newGame.getMaster()).getName();
 		GameCreationResponse message = new GameCreationResponse(newGameMasterName, newGame);
@@ -79,13 +82,15 @@ public class Endpoints {
 	
 	@GetMapping(value = "/getGamesList", produces = APP_JSON)
 	private @ResponseBody Response getGamesList() {
-		return new GamesList(this.gameControllerManager.getAllGames(), this.playerManager.getAllPlayers());
+		return new GamesListResponse(this.gameControllerManager.getAllGames(), this.playerManager.getAllPlayers());
 	}
 	
 	@MessageMapping(value = "/game/{gameID}")
 	private void processMove(@DestinationVariable("gameID") GameID gameID) {
 		System.out.println("PROCESS MOVE FOR " + gameID.getGameID());
 		this.gameControllerManager.getGame(gameID).setValue(null, null, 0);
+		GameStateResponse message = new GameStateResponse(this.gameControllerManager.getGame(gameID), this.playerManager);
+		this.messagingTemplate.convertAndSend("/game/" + gameID.getGameID(), message);
 	}
 	
 	@ExceptionHandler({ RuntimeException.class })
