@@ -1,23 +1,19 @@
 package org.prisching.tobias.Sudoku.messages.incoming;
 
-import javax.validation.constraints.Size;
-import javax.validation.constraints.NotNull;
+import org.prisching.tobias.Sudoku.messages.base.JSONnames;
+import org.prisching.tobias.Sudoku.messages.validation.NotNullNorEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PlayerRegistrationRequest extends Request {
-
-	private static final String PLAYER_NAME = "PlayerName";
+public final class PlayerRegistrationRequest extends Request {
 	
-	@NotNull
-	@Size(min = 3, max = 100)
 	private final String playerName;
 	
 	@JsonCreator
-	public PlayerRegistrationRequest(@JsonProperty(value = PLAYER_NAME, required = true) String name) {
-		this.playerName = name;
+	public PlayerRegistrationRequest(@JsonProperty(value = JSONnames.PLAYER_NAME, required = true) String name) {
+		this.playerName = NotNullNorEmpty.check(name, "Player name should not be null nor empty");
 	}
 	
 	public String getPlayerName() {
@@ -27,7 +23,7 @@ public class PlayerRegistrationRequest extends Request {
 	@Override
 	@JsonIgnore
 	public String getPrintString() {
-		return this.getClass().getName() + ": '" + PLAYER_NAME + "'='" + this.playerName + "'";
+		return this.getClass().getName() + ": '" + JSONnames.PLAYER_NAME + "'='" + this.playerName + "'";
 	}
 	
 }
