@@ -10,7 +10,7 @@ import org.prisching.tobias.Sudoku.game.player.PlayerID;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
-public class GamesList extends Response {
+public class GamesListResponse extends Response {
 
 	public class GamesListElement {
 
@@ -51,7 +51,7 @@ public class GamesList extends Response {
 	
 	private List<GamesListElement> list;
 	
-	public GamesList(List<GameController> games, List<Player> players) {
+	public GamesListResponse(List<GameController> games, List<Player> players) {
 		this.list = new ArrayList<GamesListElement>();
 		
 		for(GameController game : games) {
