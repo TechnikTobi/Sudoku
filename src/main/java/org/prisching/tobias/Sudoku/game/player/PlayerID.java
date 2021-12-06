@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class PlayerID {
 
-	private String identifier;
+	private final String identifier;
 
 	public PlayerID(String identifier) {
 		this.identifier = identifier;
