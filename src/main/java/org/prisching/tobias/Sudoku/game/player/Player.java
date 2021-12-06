@@ -2,7 +2,7 @@ package org.prisching.tobias.Sudoku.game.player;
 
 public class Player {
 
-	private PlayerID playerID;
+	private final PlayerID playerID;
 	private PlayerColor color;
 	private String name;
 	

@@ -10,9 +10,9 @@ import org.prisching.tobias.Sudoku.game.player.PlayerID;
 
 public class GameController {
 
-	private GameID gameID;
+	private final GameID gameID;
 	private String name;
-	private PlayerID master;
+	private final PlayerID master;
 	private Map<PlayerID, Integer> points;
 	private BoardManager boardManager;
 	
