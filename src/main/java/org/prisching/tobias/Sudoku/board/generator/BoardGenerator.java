@@ -44,9 +44,9 @@ public class BoardGenerator {
 			Position pos = new Position(x, y); 
 			
 			// Search for an empty field
-			if(board.getField(pos).getValue() != 0) continue;
+			if(board.getField(pos).getValue() != Field.EMPTY_FIELD_VALUE) continue;
 			
-			List<Integer> numbers = IntStream.range(1, 10).boxed().collect(Collectors.toList());
+			List<Integer> numbers = IntStream.range(MIN_V, MAX_V+1).boxed().collect(Collectors.toList());
 			Collections.shuffle(numbers);
 			
 			for(Integer value : numbers) {
@@ -62,14 +62,14 @@ public class BoardGenerator {
 				
 				// If something went wrong further down the line, reset board and continue with next value
 				if(newBoard == null) {
-					board.getField(pos).setValue(0);
+					board.getField(pos).setValue(Field.EMPTY_FIELD_VALUE);
 					continue;
 				}
 				return newBoard;
 			}
 			
 			// If non of the values did the trick, return null so another, previously set field gets a new number
-			if(board.getField(pos).getValue() == 0) {
+			if(board.getField(pos).getValue() == Field.EMPTY_FIELD_VALUE) {
 				return null;
 			}
 		}
@@ -109,7 +109,7 @@ public class BoardGenerator {
 				randomPosition = new Position(random.nextInt(0, Board.MAX_X), random.nextInt(0, Board.MAX_Y));
 			}
 			 
-			workingBoard.getField(randomPosition).setValue(0);
+			workingBoard.getField(randomPosition).setValue(Field.EMPTY_FIELD_VALUE);
 			resettedPositions.add(randomPosition);
 		}
 		

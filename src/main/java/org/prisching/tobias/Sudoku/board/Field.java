@@ -4,6 +4,8 @@ import org.prisching.tobias.Sudoku.game.player.PlayerColor;
 
 public class Field {
 
+	public static final int EMPTY_FIELD_VALUE = 0;
+	
 	private Position pos;
 	private int value;
 	private PlayerColor color;
@@ -15,7 +17,7 @@ public class Field {
 	}
 	
 	public Field(Position pos) {
-		this(pos, 0);
+		this(pos, EMPTY_FIELD_VALUE);
 	}
 	
 	public Field(int x, int y, int value) {
@@ -23,7 +25,7 @@ public class Field {
 	}
 	
 	public Field(int x, int y) {
-		this(x, y, 0);
+		this(x, y, EMPTY_FIELD_VALUE);
 	}
 
 	public Position getPos() {

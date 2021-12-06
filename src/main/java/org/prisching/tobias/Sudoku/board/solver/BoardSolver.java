@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 import org.prisching.tobias.Sudoku.board.Board;
 import org.prisching.tobias.Sudoku.board.BoardInfoExtractor;
+import org.prisching.tobias.Sudoku.board.Field;
 import org.prisching.tobias.Sudoku.board.Position;
 import org.prisching.tobias.Sudoku.board.generator.BoardGenerator;
 import org.prisching.tobias.Sudoku.board.validation.BoardValidator;
@@ -30,7 +31,7 @@ public class BoardSolver {
 			int y = i / Board.MAX_Y;
 			Position pos = new Position(x, y); 
 			
-			if(board.getField(pos).getValue() != 0) continue;
+			if(board.getField(pos).getValue() != Field.EMPTY_FIELD_VALUE) continue;
 			
 			int returnValue = 0;
 			List<Integer> numbers = IntStream.range(1, 10).boxed().collect(Collectors.toList());
@@ -44,7 +45,7 @@ public class BoardSolver {
 				
 				board.getField(pos).setValue(value);
 				returnValue += BoardSolver.recursiveSolve(board);
-				board.getField(pos).setValue(0);
+				board.getField(pos).setValue(Field.EMPTY_FIELD_VALUE);
 				
 			}
 			
