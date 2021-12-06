@@ -7,7 +7,7 @@ import org.prisching.tobias.Sudoku.board.Board;
 import org.prisching.tobias.Sudoku.board.BoardInfoExtractor;
 import org.prisching.tobias.Sudoku.board.Field;
 
-public class validateSquareValues implements IValidationRule {
+public class validateSquareValues implements IBoardValidationRule {
 
 	@Override
 	public boolean validatePlayfield(Board playfield) {

@@ -8,7 +8,7 @@ import org.prisching.tobias.Sudoku.board.Field;
 
 import java.util.ArrayList;
 
-public class validateRowValues implements IValidationRule {
+public class validateRowValues implements IBoardValidationRule {
 	
 	@Override
 	public boolean validatePlayfield(Board playfield) {

@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 public class BoardValidator {
 
-	private List<IValidationRule> rules;
+	private List<IBoardValidationRule> rules;
 	private static BoardValidator validator; 
 	
 	private BoardValidator() {
-		this.rules = new ArrayList<IValidationRule>();
+		this.rules = new ArrayList<IBoardValidationRule>();
 		
 		this.rules.add(new validateSize());
 		this.rules.add(new validateRowValues());
@@ -22,7 +22,7 @@ public class BoardValidator {
 	}
 	
 	public boolean validate(Board board) {
-		for(IValidationRule rule : this.rules) {
+		for(IBoardValidationRule rule : this.rules) {
 			if(rule.validatePlayfield(board) == false) return false;
 		}
 		
