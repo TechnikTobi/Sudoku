@@ -1,6 +1,7 @@
 package org.prisching.tobias.Sudoku.game;
 
 import org.prisching.tobias.Sudoku.board.Board;
+import org.prisching.tobias.Sudoku.board.BoardInfoExtractor;
 import org.prisching.tobias.Sudoku.board.Position;
 import org.prisching.tobias.Sudoku.board.generator.BoardGenerator;
 import org.prisching.tobias.Sudoku.game.player.PlayerColor;
@@ -9,10 +10,12 @@ public class BoardManager {
 
 	private Board fullBoard;
 	private Board playBoard;
+	private BoardInfoExtractor playBoardExtractor;
 	
 	public BoardManager(int difficulty) {
 		this.fullBoard = BoardGenerator.generateFullBoard();
 		this.playBoard = BoardGenerator.generateFinalBoard(this.fullBoard, difficulty);
+		this.playBoardExtractor = new BoardInfoExtractor(this.playBoard);
 	}
 	
 	public EPlacementState setField(Position pos, int value, PlayerColor color) {
@@ -34,6 +37,10 @@ public class BoardManager {
 	
 	public Board getPlayBoard() {
 		return this.playBoard;
+	}
+	
+	public boolean isPlayBoardFull() {
+		return this.playBoardExtractor.isFull();
 	}
 	
 }
