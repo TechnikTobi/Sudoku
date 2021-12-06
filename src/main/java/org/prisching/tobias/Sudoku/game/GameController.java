@@ -47,13 +47,20 @@ public class GameController {
 		return this.boardManager.getPlayBoard();
 	}
 	
-	public void addPlayer(PlayerID id) {
-		this.points.put(id, 0);
+	public boolean addPlayer(PlayerID id) {
+		if(this.gameState.equals(EGameState.READY)) this.points.put(id, 0);
+		return this.points.containsKey(id);
+	}
+	
+	public boolean startGame(PlayerID playerID) {
+		if(this.master.equals(playerID)) this.gameState = EGameState.ONGOING;
+		return this.gameState.equals(EGameState.ONGOING);
 	}
 	
 	public void setValue(Player player, Position pos, int value) {
 		if(this.points.containsKey(player.getID())) {
 			this.points.put(player.getID(), this.points.get(player.getID()).intValue() + this.boardManager.setField(pos, value, player.getColor()).points());
 		}
+		if(this.boardManager.isPlayBoardFull()) this.gameState = EGameState.FINISHED;
 	}
 }
