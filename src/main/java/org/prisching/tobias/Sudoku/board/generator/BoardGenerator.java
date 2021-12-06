@@ -19,6 +19,9 @@ public class BoardGenerator {
 	private static final int MIN_V = 1;
 	private static final int MAX_V = 9;
 	
+	private static final int MIN_DIFFICULTY = 1;
+	private static final int MAX_DIFFICULTY = 60;
+	
 	public static Board generateFullBoard() {	
 		return addRandomNumber(new Board());
 	}
@@ -79,8 +82,8 @@ public class BoardGenerator {
 	public static Board generateFinalBoard(Board board, int difficulty) {
 	
 		// Clean input data to useful range
-		if(difficulty < 30) difficulty = 30;
-		if(difficulty > 60) difficulty = 60;
+		difficulty = (difficulty < MIN_DIFFICULTY) ? MIN_DIFFICULTY : difficulty;
+		difficulty = (difficulty > MAX_DIFFICULTY) ? MAX_DIFFICULTY : difficulty;
 		
 		// Create copies of the original board so it won't be changed
 		Board workingBoard = new Board(board);
