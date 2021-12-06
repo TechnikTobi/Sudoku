@@ -20,6 +20,13 @@ public class GameCreationResponse extends PlayerRegistrationResponse {
 		this.gameMaster = gameMaster;
 	}
 	
+	public GameCreationResponse(String message) {
+		super(message);
+		this.gameID = null;
+		this.gameName = null;
+		this.gameMaster = null;
+	}
+	
 	@JsonGetter("GameID")
 	public String getGameIDstring() {
 		return this.gameID.getGameID();

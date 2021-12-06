@@ -12,6 +12,11 @@ public class PlayerRegistrationResponse extends Response {
 		this.id = id;
 	}
 	
+	public PlayerRegistrationResponse(String message) {
+		this.id = null;
+		this.setMessage(message);
+	} 
+	
 	@JsonGetter("PlayerID")
 	public String getPlayerIDstring() {
 		return this.id.getPlayerID();
