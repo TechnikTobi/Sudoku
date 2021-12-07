@@ -62,6 +62,7 @@ public class Endpoints {
 		
 		PlayerID playerID = new PlayerID(request.getPlayerID().getIdentifier());
 		
+		// Should be replaced by actual validation
 		if(this.playerManager.getPlayer(playerID) == null) {
 			throw new RuntimeException("huhu");
 		}
@@ -76,7 +77,13 @@ public class Endpoints {
 	}
 	
 	@PostMapping(value = "/joinGame", consumes = APP_JSON, produces = APP_JSON)
-	private @ResponseBody Response joinGame(@Validated @RequestBody Request request) {
+	private @ResponseBody Response joinGame(@Validated @RequestBody GameJoinRequest request) {
+		
+		PlayerID playerID = new PlayerID(request.getNetPlayerID().getIdentifier());
+		GameID gameID = new GameID(request.getNetGameID().getIdentifier());
+		
+		this.gameControllerManager.getGame(gameID).addPlayer(playerID);
+		
 		return null;
 	}
 	
