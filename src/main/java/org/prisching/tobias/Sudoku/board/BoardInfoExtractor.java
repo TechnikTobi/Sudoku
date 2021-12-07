@@ -22,7 +22,6 @@ public class BoardInfoExtractor {
 			return this.board.getAllFields()
 				.keySet()
 				.stream()
-				//.max((p1, p2) -> {return (p1.getX() < p2.getX() ? -1 : (p1.getX() == p2.getX() ? 0 : 1));})
 				.max((p1, p2) -> {return (
 						p1.getX() < p2.getX() ? -1 : (p1.getX() == p2.getX() ? (
 							p1.getY() < p2.getY() ? -1 : (p1.getY() == p2.getY() ? 0 : 1)
@@ -90,7 +89,7 @@ public class BoardInfoExtractor {
 			for(int j = 0; j < 3; j++) {
 				int y = j;
 				squares.add(this.board.getAllFields()
-						.values()
+					.values()
 					.stream()
 					.filter(f -> f.getPos().getX() >= 3 * x)
 					.filter(f -> f.getPos().getX() < 3 * (x+1))
@@ -141,9 +140,7 @@ public class BoardInfoExtractor {
 				}
 			}
 			System.out.println(rowString);
-			if(y == 2 || y == 5) {
-				System.out.println("══════╬═══════╬══════");
-			}
+			if(y == 2 || y == 5) System.out.println("══════╬═══════╬══════");
 		}
 			
 	}
