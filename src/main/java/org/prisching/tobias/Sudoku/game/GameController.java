@@ -1,6 +1,7 @@
 package org.prisching.tobias.Sudoku.game;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.HashMap;
 
 import org.prisching.tobias.Sudoku.board.Board;
@@ -10,9 +11,13 @@ import org.prisching.tobias.Sudoku.game.player.PlayerID;
 
 public class GameController {
 
+	private final static int POINTS_UNREADY = -1;
+	private final static int POINTS_READY = 0;
+	
 	private final GameID gameID;
-	private String name;
+	private final String name;
 	private final PlayerID master;
+	
 	private Map<PlayerID, Integer> points;
 	private BoardManager boardManager;
 	private EGameState gameState;
@@ -22,7 +27,6 @@ public class GameController {
 		this.name = name;
 		this.master = master;
 		this.points = new HashMap<PlayerID, Integer>();
-		this.points.put(master, 0);
 		this.boardManager = new BoardManager(difficulty);
 		this.gameState = EGameState.READY;
 	}
@@ -56,19 +60,32 @@ public class GameController {
 	}
 	
 	public boolean addPlayer(PlayerID id) {
-		if(this.gameState.equals(EGameState.READY)) this.points.put(id, 0);
+		if(this.gameState.equals(EGameState.READY)) this.points.put(id, POINTS_UNREADY);
 		return this.points.containsKey(id);
 	}
 	
+	/*
 	public boolean startGame(PlayerID playerID) {
 		if(this.master.equals(playerID)) this.gameState = EGameState.ONGOING;
 		return this.gameState.equals(EGameState.ONGOING);
 	}
+	*/
+	
+	public void readyPlayer(PlayerID id) {
+		if(this.points.containsKey(id)) {
+			this.points.put(id, POINTS_READY);
+		}
+		if(this.points.values().stream().filter(p -> p == POINTS_READY).collect(Collectors.toList()).isEmpty()) {
+			this.gameState = EGameState.ONGOING;
+		}
+	}
 	
 	public void setValue(Player player, Position pos, int value) {
-		if(this.points.containsKey(player.getID())) {
-			this.points.put(player.getID(), this.points.get(player.getID()).intValue() + this.boardManager.setField(pos, value, player.getColor()).points());
+		if(this.gameState.equals(EGameState.ONGOING)) {
+			if(this.points.containsKey(player.getID())) {
+				this.points.put(player.getID(), this.points.get(player.getID()).intValue() + this.boardManager.setField(pos, value, player.getColor()).points());
+			}
+			if(this.boardManager.isPlayBoardFull()) this.gameState = EGameState.FINISHED;
 		}
-		if(this.boardManager.isPlayBoardFull()) this.gameState = EGameState.FINISHED;
 	}
 }
