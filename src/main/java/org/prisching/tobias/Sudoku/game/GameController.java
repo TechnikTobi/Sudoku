@@ -75,7 +75,7 @@ public class GameController {
 		if(this.points.containsKey(id)) {
 			this.points.put(id, POINTS_READY);
 		}
-		if(this.points.values().stream().filter(p -> p == POINTS_READY).collect(Collectors.toList()).isEmpty()) {
+		if(this.points.values().stream().filter(p -> p == POINTS_UNREADY).collect(Collectors.toList()).isEmpty()) {
 			this.gameState = EGameState.ONGOING;
 		}
 	}
