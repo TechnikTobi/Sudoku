@@ -1,5 +1,6 @@
 package org.prisching.tobias.Sudoku.messages.base;
 
+import org.prisching.tobias.Sudoku.messages.validation.IsAlpha;
 import org.prisching.tobias.Sudoku.messages.validation.NotNullNorEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -11,8 +12,9 @@ public final class NetworkGameIdentifier {
 	private final String identifier;
 	
 	@JsonCreator
-	public NetworkGameIdentifier(@JsonProperty(value = JSONnames.GAME_ID, required = true) String identifier) {
-		this.identifier = NotNullNorEmpty.check(identifier, "Identifier should not be null nor empty");
+	//public NetworkGameIdentifier(@JsonProperty(value = JSONnames.GAME_ID, required = true) String identifier) {
+	public NetworkGameIdentifier(String identifier) {
+		this.identifier = IsAlpha.check(NotNullNorEmpty.check(identifier, "Identifier should not be null nor empty"), null);
 	}
 	
 	@JsonGetter(JSONnames.GAME_ID)
