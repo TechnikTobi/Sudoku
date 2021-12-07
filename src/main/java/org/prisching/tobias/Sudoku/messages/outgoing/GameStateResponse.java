@@ -11,6 +11,8 @@ import org.prisching.tobias.Sudoku.game.GameController;
 import org.prisching.tobias.Sudoku.game.player.Player;
 import org.prisching.tobias.Sudoku.game.player.PlayerColor;
 import org.prisching.tobias.Sudoku.game.player.PlayerManager;
+import org.prisching.tobias.Sudoku.messages.base.JSONnames;
+import org.prisching.tobias.Sudoku.messages.base.NetworkField;
 
 public class GameStateResponse extends Response {
 
@@ -51,21 +53,22 @@ public class GameStateResponse extends Response {
 		this.setMessage(message);
 	}
 	
-	@JsonGetter("fields")
-	public List<Field> getFields() {
+	@JsonGetter(JSONnames.FIELDS)
+	public List<NetworkField> getFields() {
 		if(this.gameController != null) {
 			if(!this.gameController.isJoinable()) {
 				return this.gameController.getBoard().getAllFields()
 					.values()
 					.stream()
+					.map(f -> new NetworkField(f.getPos().getX(), f.getPos().getY(), f.getValue(), f.getColor().getHexString()))
 					.collect(Collectors.toList());
 			}
-			return new ArrayList<Field>();
+			return new ArrayList<NetworkField>();
 		}
 		return null;
 	}
 	
-	@JsonGetter("players")
+	@JsonGetter(JSONnames.PLAYERS)
 	public List<PlayerListElement> getPlayers() {
 		if(this.gameController != null) {
 			return this.gameController.getPoints()
