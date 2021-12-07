@@ -55,8 +55,10 @@ public class GamesListResponse extends Response {
 		this.list = new ArrayList<GamesListElement>();
 		
 		for(GameController game : games) {
-			String masterName = players.stream().filter(p -> p.getID().equals(game.getMaster())).findFirst().get().getName();
-			this.list.add(new GamesListElement(game.getID(), game.getName(), game.getMaster(), masterName));
+			if(game.isJoinable()) {
+				String masterName = players.stream().filter(p -> p.getID().equals(game.getMaster())).findFirst().get().getName();
+				this.list.add(new GamesListElement(game.getID(), game.getName(), game.getMaster(), masterName));
+			}
 		}
 	}
 	
