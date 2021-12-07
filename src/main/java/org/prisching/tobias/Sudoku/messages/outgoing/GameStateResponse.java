@@ -1,7 +1,6 @@
 package org.prisching.tobias.Sudoku.messages.outgoing;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -10,7 +9,6 @@ import org.prisching.tobias.Sudoku.board.Field;
 import org.prisching.tobias.Sudoku.game.GameController;
 import org.prisching.tobias.Sudoku.game.player.Player;
 import org.prisching.tobias.Sudoku.game.player.PlayerColor;
-import org.prisching.tobias.Sudoku.game.player.PlayerID;
 import org.prisching.tobias.Sudoku.game.player.PlayerManager;
 
 public class GameStateResponse extends Response {
@@ -54,16 +52,27 @@ public class GameStateResponse extends Response {
 	
 	@JsonGetter("fields")
 	public List<Field> getFields() {
-		return this.gameController.getBoard().getAllFields().values().stream().collect(Collectors.toList());
+		if(this.gameController != null) {
+			if(!this.gameController.isJoinable()) {
+				return this.gameController.getBoard().getAllFields()
+					.values()
+					.stream()
+					.collect(Collectors.toList());
+			}
+		}
+		return null;
 	}
 	
 	@JsonGetter("players")
 	public List<PlayerListElement> getPlayers() {
-		return this.gameController.getPoints()
-			.entrySet()
-			.stream()
-			.map(e -> new PlayerListElement(this.playerManager.getPlayer(e.getKey()), e.getValue().intValue()))
-			.collect(Collectors.toList());
+		if(this.gameController != null) {
+			return this.gameController.getPoints()
+				.entrySet()
+				.stream()
+				.map(e -> new PlayerListElement(this.playerManager.getPlayer(e.getKey()), e.getValue().intValue()))
+				.collect(Collectors.toList());
+		}
+		return null;
 	}
 	
 }
