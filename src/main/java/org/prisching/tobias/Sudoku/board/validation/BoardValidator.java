@@ -3,7 +3,6 @@ package org.prisching.tobias.Sudoku.board.validation;
 import java.util.List;
 
 import org.prisching.tobias.Sudoku.board.Board;
-import org.prisching.tobias.Sudoku.board.BoardInfoExtractor;
 
 import java.util.ArrayList;
 

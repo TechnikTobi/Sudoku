@@ -1,12 +1,7 @@
 package org.prisching.tobias.Sudoku.board;
 
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.HashMap;
-import java.util.List;
 
 public class Board {
 

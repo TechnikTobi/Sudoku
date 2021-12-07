@@ -9,7 +9,6 @@ import org.prisching.tobias.Sudoku.board.Board;
 import org.prisching.tobias.Sudoku.board.BoardInfoExtractor;
 import org.prisching.tobias.Sudoku.board.Field;
 import org.prisching.tobias.Sudoku.board.Position;
-import org.prisching.tobias.Sudoku.board.generator.BoardGenerator;
 import org.prisching.tobias.Sudoku.board.validation.BoardValidator;
 
 public class BoardSolver {

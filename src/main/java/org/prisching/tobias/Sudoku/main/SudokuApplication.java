@@ -2,9 +2,6 @@ package org.prisching.tobias.Sudoku.main;
 
 import java.util.Collections;
 
-import org.prisching.tobias.Sudoku.board.Board;
-import org.prisching.tobias.Sudoku.board.BoardInfoExtractor;
-import org.prisching.tobias.Sudoku.board.generator.BoardGenerator;
 import org.prisching.tobias.Sudoku.game.GameController;
 import org.prisching.tobias.Sudoku.game.player.PlayerID;
 import org.prisching.tobias.Sudoku.game.player.PlayerManager;
