@@ -5,7 +5,7 @@ import org.prisching.tobias.Sudoku.messages.base.*;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public final class GameJoinRequest {
+public class GameJoinRequest {
 
 	private final NetworkPlayerIdentifier netPlayerID;
 	private final NetworkGameIdentifier netGameID;
