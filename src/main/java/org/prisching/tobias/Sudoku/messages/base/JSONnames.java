@@ -15,4 +15,13 @@ public class JSONnames {
 	
 	public static final String DATA = "Data";
 	public static final String ERROR = "ErrorMessage";
+	
+	public static final String POS_X = "X";
+	public static final String POS_Y = "Y";
+	public static final String VALUE = "Value";
+	public static final String COLOR = "Color";
+	
+	public static final String FIELDS = "Fields";
+	public static final String PLAYERS = "Players";
+	
 }
