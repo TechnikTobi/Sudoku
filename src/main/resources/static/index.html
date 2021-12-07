@@ -17,7 +17,8 @@
 		<div id="games">
 			<input type="text" id="gameName" placeholder="enter game name">
 			<input type="number" step="1" min="30" max="60" value="45" id="gameDifficulty" placeholder="enter game difficulty">
-			<button id="createGame" onClick="createGame()" type="submit">Create!</button>
+			<button id="createGameButton" onClick="createGame()" type="submit">Create!</button>
+			<button id="refreshGamesButton" onClick="refreshGames()" type="submit">Refresh</button>
 			<table id="gamesTable">
 				<thead>
 					<tr>
@@ -35,131 +36,131 @@
 		<div id="board">
 			<div class="row">
 				<div id="x0y0" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x0y1" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x0y2" onclick="fieldClick(this.id)" class="field">.</div>
-				<div class="squareDivider"></div>
-				<div id="x0y3" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x0y4" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x0y5" onclick="fieldClick(this.id)" class="field">.</div>
-				<div class="squareDivider"></div>
-				<div id="x0y6" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x0y7" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x0y8" onclick="fieldClick(this.id)" class="field">.</div>
-			</div>
-
-			<div class="row">
 				<div id="x1y0" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x1y1" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x1y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y0" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x1y3" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x1y4" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x1y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x3y0" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x4y0" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x5y0" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x1y6" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x1y7" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x1y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x6y0" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x7y0" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x8y0" onclick="fieldClick(this.id)" class="field">.</div>
 			</div>
 
 			<div class="row">
-				<div id="x2y0" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x0y1" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x1y1" onclick="fieldClick(this.id)" class="field">.</div>
 				<div id="x2y1" onclick="fieldClick(this.id)" class="field">.</div>
+				<div class="squareDivider"></div>
+				<div id="x3y1" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x4y1" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x5y1" onclick="fieldClick(this.id)" class="field">.</div>
+				<div class="squareDivider"></div>
+				<div id="x6y1" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x7y1" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x8y1" onclick="fieldClick(this.id)" class="field">.</div>
+			</div>
+
+			<div class="row">
+				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
 				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x2y3" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x2y4" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x2y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x2y6" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x2y7" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x2y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
 			</div>
 
 			<div class="squareDivider"></div>
 
 			<div class="row">
-				<div id="x3y0" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x3y1" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x3y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x0y3" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x1y3" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y3" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
 				<div id="x3y3" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x3y4" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x3y5" onclick="fieldClick(this.id)" class="field">.</div>
-				<div class="squareDivider"></div>
-				<div id="x3y6" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x3y7" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x3y8" onclick="fieldClick(this.id)" class="field">.</div>
-			</div>
-
-			<div class="row">
-				<div id="x4y0" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x4y1" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x4y2" onclick="fieldClick(this.id)" class="field">.</div>
-				<div class="squareDivider"></div>
 				<div id="x4y3" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x4y4" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x4y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x5y3" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x4y6" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x4y7" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x4y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x6y3" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x7y3" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x8y3" onclick="fieldClick(this.id)" class="field">.</div>
 			</div>
 
 			<div class="row">
-				<div id="x5y0" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x5y1" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x5y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x0y4" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x1y4" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y4" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x5y3" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x3y4" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x4y4" onclick="fieldClick(this.id)" class="field">.</div>
 				<div id="x5y4" onclick="fieldClick(this.id)" class="field">.</div>
+				<div class="squareDivider"></div>
+				<div id="x6y4" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x7y4" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x8y4" onclick="fieldClick(this.id)" class="field">.</div>
+			</div>
+
+			<div class="row">
+				<div id="x0y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x1y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div class="squareDivider"></div>
+				<div id="x3y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x4y5" onclick="fieldClick(this.id)" class="field">.</div>
 				<div id="x5y5" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x5y6" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x5y7" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x5y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x6y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x7y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x8y5" onclick="fieldClick(this.id)" class="field">.</div>
 			</div>
 
 			<div class="squareDivider"></div>
 
 			<div class="row">
-				<div id="x6y0" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x6y1" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x6y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x0y6" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x1y6" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y6" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x6y3" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x6y4" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x6y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x3y6" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x4y6" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x5y6" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
 				<div id="x6y6" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x6y7" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x6y8" onclick="fieldClick(this.id)" class="field">.</div>
-			</div>
-
-			<div class="row">
-				<div id="x7y0" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x7y1" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x7y2" onclick="fieldClick(this.id)" class="field">.</div>
-				<div class="squareDivider"></div>
-				<div id="x7y3" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x7y4" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x7y5" onclick="fieldClick(this.id)" class="field">.</div>
-				<div class="squareDivider"></div>
 				<div id="x7y6" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x7y7" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x7y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x8y6" onclick="fieldClick(this.id)" class="field">.</div>
 			</div>
 
 			<div class="row">
-				<div id="x8y0" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x8y1" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x8y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x0y7" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x1y7" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y7" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x8y3" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x8y4" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x8y5" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x3y7" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x4y7" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x5y7" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x8y6" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x6y7" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x7y7" onclick="fieldClick(this.id)" class="field">.</div>
 				<div id="x8y7" onclick="fieldClick(this.id)" class="field">.</div>
+			</div>
+
+			<div class="row">
+				<div id="x0y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x1y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x2y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div class="squareDivider"></div>
+				<div id="x3y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x4y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x5y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div class="squareDivider"></div>
+				<div id="x6y8" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x7y8" onclick="fieldClick(this.id)" class="field">.</div>
 				<div id="x8y8" onclick="fieldClick(this.id)" class="field">.</div>
 			</div>
 		</div>

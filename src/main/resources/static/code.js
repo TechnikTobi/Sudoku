@@ -38,12 +38,6 @@ function registerPlayer() {
 }
 
 function createGame() {
-	var row = document.getElementById("gamesTableBody").insertRow(-1);
-	row.insertCell(0).innerHTML = "1";
-	row.insertCell(1).innerHTML = "2";
-	row.insertCell(2).innerHTML = "3";
-	row.insertCell(3).innerHTML = "4";
-
 	const request = new XMLHttpRequest();
 	const url = "/app/createGame"
 	request.open("POST", url, true);
@@ -51,18 +45,41 @@ function createGame() {
 	JSONdata = JSON.stringify({
 		"PlayerID" : playerID,
 		"GameName" : document.getElementById("gameName").value,
-		"Difficulty" : Math.max(Math.ceil(document.getElementById("gameDifficulty").value/10)*10, 0)
+		"Difficulty" : Math.max(Math.ceil(document.getElementById("gameDifficulty").value), 0)
 	});
 	request.send(JSONdata);
-	console.log(JSONdata);
-	console.log(playerID);
+
+	// request.onreadystatechange = (event) => {
+	// 	if(request.readyState == 4) {
+	// 		const responseData = JSON.parse(request.responseText);
+	// 		var gameID = responseData["gameID"];
+	// 		console.log(gameID);
+	// 	}
+	// }
+	request.onreadystatechange = (event) => {
+		refreshGames();
+	}
+}
+
+function refreshGames() {
+	const request = new XMLHttpRequest();
+	request.open("GET", "/app/getGamesList", true);
+	request.send();
 
 	request.onreadystatechange = (event) => {
 		if(request.readyState == 4) {
-			// Get PlayerID and save it
-			const responseData = JSON.parse(request.responseText);
-			var gameID = responseData["gameID"];
-			console.log(gameID);
+			const responseJSON = JSON.parse(request.responseText);
+			console.log(responseJSON);
+			document.getElementById("gamesTableBody").innerHTML = "";
+			for(let index in responseJSON["Data"]["Games"]) {
+				let game = responseJSON["Data"]["Games"][index];
+				console.log(game);
+				var row = document.getElementById("gamesTableBody").insertRow(-1);
+				row.insertCell(0).innerHTML = game["GameID"];
+				row.insertCell(1).innerHTML = game["GameName"];
+				row.insertCell(2).innerHTML = game["MasterID"];
+				row.insertCell(3).innerHTML = game["MasterName"];
+			}
 		}
 	}
 }
@@ -85,11 +102,21 @@ function showGame(message) {
 
 function fieldClick(id) {
 	if(selected_x != -1 && selected_y != -1) {
-		document.getElementById(getFieldID()).style.borderWidth = "0px"
+		document.getElementById(getFieldID()).style.boxShadow = "none";
 	}
-	document.getElementById(id).style.borderWidth = "5px";
-	selected_x = parseInt(id[1]);
-	selected_y = parseInt(id[3]);
+	x_readout = parseInt(id[1]);
+	y_readout = parseInt(id[3]);
+	if(selected_x == x_readout && selected_y == y_readout) {
+		document.getElementById(id).style.boxShadow = "none";
+		selected_x = -1;
+		selected_y = -1;
+	}else{
+		document.getElementById(id).style.boxShadow = "0 0 0.3em black";
+		selected_x = x_readout;
+		selected_y = y_readout;
+	}
+	console.log(selected_x);
+	console.log(selected_y);
 }
 
 function getFieldID() {
