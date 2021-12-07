@@ -50,13 +50,14 @@ public class Endpoints {
 	}
 	
 	@PostMapping(value = "/register", consumes = APP_JSON, produces = APP_JSON)
-	private @ResponseBody PlayerRegistrationResponse register(@Validated @RequestBody PlayerRegistrationRequest request) {
+	private @ResponseBody ResponseContainer register(@Validated @RequestBody PlayerRegistrationRequest request) {
 		logger.info("Received request: " + request.getPrintString());
-		return new PlayerRegistrationResponse(this.playerManager.addPlayer(request.getPlayerName()));
+		Response data = new PlayerRegistrationResponse(this.playerManager.addPlayer(request.getPlayerName()));
+		return new ResponseContainer(data);
 	}
 	
 	@PostMapping(value = "/createGame", consumes = APP_JSON, produces = APP_JSON)
-	private @ResponseBody GameCreationResponse createGame(@Validated @RequestBody GameCreationRequest request) {
+	private @ResponseBody ResponseContainer createGame(@Validated @RequestBody GameCreationRequest request) {
 		
 		logger.info("Received request: " + request.getPrintString());
 		
@@ -70,26 +71,28 @@ public class Endpoints {
 		GameID newGameID = this.gameControllerManager.createGame(playerID, request.getGameName(), request.getDifficulty());
 		GameController newGame = this.gameControllerManager.getGame(newGameID);
 		String newGameMasterName = this.playerManager.getPlayer(newGame.getMaster()).getName();
-		GameCreationResponse message = new GameCreationResponse(newGameMasterName, newGame);
+		Response data = new GameCreationResponse(newGameMasterName, newGame);
+		ResponseContainer message = new ResponseContainer(data);
 		
 		this.messagingTemplate.convertAndSend("/games", message);
 		return message;
 	}
 	
 	@PostMapping(value = "/joinGame", consumes = APP_JSON, produces = APP_JSON)
-	private @ResponseBody Response joinGame(@Validated @RequestBody GameJoinRequest request) {
+	private @ResponseBody ResponseContainer joinGame(@Validated @RequestBody GameJoinRequest request) {
 		
 		PlayerID playerID = new PlayerID(request.getNetPlayerID().getIdentifier());
 		GameID gameID = new GameID(request.getNetGameID().getIdentifier());
 		
 		this.gameControllerManager.getGame(gameID).addPlayer(playerID);
 		
-		return null;
+		return new ResponseContainer();
 	}
 	
 	@GetMapping(value = "/getGamesList", produces = APP_JSON)
-	private @ResponseBody Response getGamesList() {
-		return new GamesListResponse(this.gameControllerManager.getAllGames(), this.playerManager.getAllPlayers());
+	private @ResponseBody ResponseContainer getGamesList() {
+		Response data = new GamesListResponse(this.gameControllerManager.getAllGames(), this.playerManager.getAllPlayers());
+		return new ResponseContainer(data);
 	}
 	
 	@MessageMapping(value = "/game/{gameID}")
