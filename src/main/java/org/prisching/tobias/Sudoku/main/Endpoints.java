@@ -79,7 +79,7 @@ public class Endpoints {
 		return message;
 	}
 	
-	@PostMapping(value = "/joinGame", consumes = APP_JSON, produces = APP_JSON)
+	@PostMapping(value = "/game/{gameID}/join", consumes = APP_JSON, produces = APP_JSON)
 	private @ResponseBody ResponseContainer joinGame(@Validated @RequestBody GameJoinRequest request) {
 		
 		PlayerID playerID = new PlayerID(request.getNetPlayerID().getIdentifier());
