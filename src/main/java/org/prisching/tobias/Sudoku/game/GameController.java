@@ -47,6 +47,14 @@ public class GameController {
 		return this.boardManager.getPlayBoard();
 	}
 	
+	public boolean isJoinable() {
+		return this.gameState.equals(EGameState.READY);
+	}
+	
+	public boolean isFinished() {
+		return this.gameState.equals(EGameState.FINISHED);
+	}
+	
 	public boolean addPlayer(PlayerID id) {
 		if(this.gameState.equals(EGameState.READY)) this.points.put(id, 0);
 		return this.points.containsKey(id);
