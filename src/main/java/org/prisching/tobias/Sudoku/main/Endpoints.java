@@ -7,6 +7,7 @@ import org.prisching.tobias.Sudoku.game.GameControllerManager;
 import org.prisching.tobias.Sudoku.game.GameID;
 import org.prisching.tobias.Sudoku.game.player.PlayerID;
 import org.prisching.tobias.Sudoku.game.player.PlayerManager;
+import org.prisching.tobias.Sudoku.messages.base.NetworkGameIdentifier;
 import org.prisching.tobias.Sudoku.messages.incoming.*;
 import org.prisching.tobias.Sudoku.messages.outgoing.*;
 
@@ -17,17 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -84,7 +85,46 @@ public class Endpoints {
 		PlayerID playerID = new PlayerID(request.getNetPlayerID().getIdentifier());
 		GameID gameID = new GameID(request.getNetGameID().getIdentifier());
 		
+		// Replace with real, proper validation
+		if(this.playerManager.getPlayer(playerID) == null) {
+			throw new RuntimeException("playerID not existant");
+		}
+		
+		if(this.gameControllerManager.getGame(gameID) == null) {
+			throw new RuntimeException("gameID not existant");
+		}
+		
 		this.gameControllerManager.getGame(gameID).addPlayer(playerID);
+		
+		return new ResponseContainer();
+	}
+	
+	@PostMapping(value = "/game/{gameID}/ready", consumes = APP_JSON, produces = APP_JSON)
+	private @ResponseBody ResponseContainer readyForGame(@Validated @RequestBody ReadyForGameRequest request) {
+		
+		PlayerID playerID = new PlayerID(request.getNetPlayerID().getIdentifier());
+		GameID gameID = new GameID(request.getNetGameID().getIdentifier());
+		
+		// Replace with real, proper validation
+		if(this.playerManager.getPlayer(playerID) == null) {
+			throw new RuntimeException("playerID not existant");
+		}
+		
+		if(this.gameControllerManager.getGame(gameID) == null) {
+			throw new RuntimeException("gameID not existant");
+		}
+		
+		if(!this.gameControllerManager.getGame(gameID).getPoints().containsKey(playerID)) {
+			throw new RuntimeException("playerID does not belong to game with specified gameID");
+		}
+		
+		this.gameControllerManager.getGame(gameID).readyPlayer(playerID);
+		
+		if(!this.gameControllerManager.getGame(gameID).isJoinable()) {
+			GameStateResponse data = new GameStateResponse(this.gameControllerManager.getGame(gameID), this.playerManager);
+			ResponseContainer message = new ResponseContainer(data);
+			this.messagingTemplate.convertAndSend("/game/" + gameID.getGameID(), message);
+		}
 		
 		return new ResponseContainer();
 	}
@@ -95,9 +135,21 @@ public class Endpoints {
 		return new ResponseContainer(data);
 	}
 	
-	@MessageMapping(value = "/game/{gameID}")
-	private void processMove(@DestinationVariable("gameID") GameID gameID) {
-		System.out.println("PROCESS MOVE FOR " + gameID.getGameID());
+	// Only for testing
+	@RequestMapping(value = "/game/{gameID}/status", method = RequestMethod.GET, produces = APP_JSON)
+	//@GetMapping(value = "/game/{gameID}/status", produces = APP_JSON)
+	private @ResponseBody ResponseContainer getGameStatus(@PathVariable("gameID") NetworkGameIdentifier netGameID) {
+		GameID gameID = new GameID(netGameID.getIdentifier());
+		if(this.gameControllerManager.getGame(gameID) == null) {
+			throw new RuntimeException("no game with such id existant");
+		}
+		GameStateResponse data = new GameStateResponse(this.gameControllerManager.getGame(gameID), this.playerManager);
+		return new ResponseContainer(data);
+	}
+	
+	@MessageMapping(value = "/game/{gameID}/move")
+	private void processMove(@DestinationVariable("gameID") NetworkGameIdentifier netGameID) {
+		GameID gameID = new GameID(netGameID.getIdentifier());
 		this.gameControllerManager.getGame(gameID).setValue(null, null, 0);
 		GameStateResponse message = new GameStateResponse(this.gameControllerManager.getGame(gameID), this.playerManager);
 		this.messagingTemplate.convertAndSend("/game/" + gameID.getGameID(), message);

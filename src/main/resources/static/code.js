@@ -3,6 +3,7 @@ console.log("Sudoku!");
 var client;
 
 var playerID = "";
+var gameID = "";
 
 var selected_x = -1;
 var selected_y = -1;
@@ -14,21 +15,20 @@ function registerPlayer() {
 	request.open("POST", url, true);
 	request.setRequestHeader("Content-Type", "application/json");
 	request.send(JSON.stringify({
-		"name" : document.getElementById("registerName").value
+		"PlayerName" : document.getElementById("registerName").value
 	}));
 
 	request.onreadystatechange = (event) => {
 		if(request.readyState == 4) {
 			// Get PlayerID and save it
-			console.log(request.responseText);
 			const responseData = JSON.parse(request.responseText);
-			playerID = responseData["PlayerID"];
+			playerID = responseData["Data"]["PlayerID"];
 			console.log(playerID);
 
-			client = Stomp.over(new SockJS("/websocket"));
-			client.connect({}, function (frame) {
-				client.subscribe("/games", function (message) {showGame(message)});
-			});
+			// client = Stomp.over(new SockJS("/websocket"));
+			// client.connect({}, function (frame) {
+			// 	client.subscribe("/games", function (message) {showGame(message)});
+			// });
 
 			// Hide registration and show the games
 			document.getElementById("registration").style.visibility = "hidden";
@@ -48,10 +48,14 @@ function createGame() {
 	const url = "/app/createGame"
 	request.open("POST", url, true);
 	request.setRequestHeader("Content-Type", "application/json");
-	request.send(JSON.stringify({
-		"name" : document.getElementById("gameName").value,
-		"difficulty" : Math.max(Math.ceil(document.getElementById("gameDifficulty").value/10)*10, 0)
-	}));
+	JSONdata = JSON.stringify({
+		"PlayerID" : playerID,
+		"GameName" : document.getElementById("gameName").value,
+		"Difficulty" : Math.max(Math.ceil(document.getElementById("gameDifficulty").value/10)*10, 0)
+	});
+	request.send(JSONdata);
+	console.log(JSONdata);
+	console.log(playerID);
 
 	request.onreadystatechange = (event) => {
 		if(request.readyState == 4) {
