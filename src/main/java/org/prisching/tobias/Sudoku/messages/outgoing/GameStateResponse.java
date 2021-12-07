@@ -1,6 +1,7 @@
 package org.prisching.tobias.Sudoku.messages.outgoing;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -59,6 +60,7 @@ public class GameStateResponse extends Response {
 					.stream()
 					.collect(Collectors.toList());
 			}
+			return new ArrayList<Field>();
 		}
 		return null;
 	}
