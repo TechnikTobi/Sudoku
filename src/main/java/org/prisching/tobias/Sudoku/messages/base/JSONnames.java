@@ -9,9 +9,11 @@ public class JSONnames {
 	public static final String GAME_NAME = "GameName";
 	
 	public static final String GAMES = "Games";
+	public static final String CREATOR_NAME = "CreatorName";
+	
 	public static final String DIFFICULTY = "Difficulty";
-	public static final String MASTER_ID = "MasterID";
-	public static final String MASTER_NAME = "MasterName";
+	public static final String READY_PLAYERS = "ReadyPlayers";
+	public static final String TOTAL_PLAYERS = "TotalPlayers";
 	
 	public static final String DATA = "Data";
 	public static final String ERROR = "ErrorMessage";
