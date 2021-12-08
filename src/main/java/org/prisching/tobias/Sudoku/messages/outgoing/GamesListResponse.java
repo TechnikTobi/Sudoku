@@ -20,12 +20,15 @@ public class GamesListResponse extends Response {
 		
 		private PlayerID masterID;
 		private String masterName;
+		
+		private int difficulty;
 
-		public GamesListElement(GameID gameID, String gameName, PlayerID masterID, String masterName) {
+		public GamesListElement(GameID gameID, String gameName, PlayerID masterID, String masterName, int difficulty) {
 			this.gameID = gameID;
 			this.gameName = gameName;
 			this.masterID = masterID;
 			this.masterName = masterName;
+			this.difficulty = difficulty;
 		}
 		
 		@JsonGetter(JSONnames.GAME_ID)
@@ -48,6 +51,11 @@ public class GamesListResponse extends Response {
 			return this.masterName;
 		}
 		
+		@JsonGetter(JSONnames.DIFFICULTY)
+		public int getDifficulty() {
+			return this.difficulty;
+		}
+		
 	}
 	
 	private List<GamesListElement> list;
@@ -58,7 +66,7 @@ public class GamesListResponse extends Response {
 		for(GameController game : games) {
 			if(game.isJoinable()) {
 				String masterName = players.stream().filter(p -> p.getID().equals(game.getMaster())).findFirst().get().getName();
-				this.list.add(new GamesListElement(game.getID(), game.getName(), game.getMaster(), masterName));
+				this.list.add(new GamesListElement(game.getID(), game.getName(), game.getMaster(), masterName, game.getDifficulty()));
 			}
 		}
 	}
