@@ -10,12 +10,12 @@
 	<body>
 
 		<div id="registration">
-			<input type="text" id="registerName" placeholder="enter your name">
+			<input type="text" id="registerName" placeholder="enter your name" value="Test1">
 			<button id="registerButton" onClick="registerPlayer()" type="submit">Connect</button>
 		</div>
 
 		<div id="games">
-			<input type="text" id="gameName" placeholder="enter game name">
+			<input type="text" id="gameName" placeholder="enter game name" value="Test1">
 			<input type="number" step="1" min="30" max="60" value="45" id="gameDifficulty" placeholder="enter game difficulty">
 			<button id="createGameButton" onClick="createGame()" type="submit">Create!</button>
 			<button id="refreshGamesButton" onClick="refreshGames()" type="submit">Refresh</button>
@@ -31,6 +31,11 @@
 				<tbody id="gamesTableBody">
 				</tbody>
 			</table>
+		</div>
+
+		<div id="ready">
+			<p>Are you ready?</p>
+			<button id="readyButton" onClick="readyForGame()" type="submit">Ready</button>
 		</div>
 
 		<div id="board">
@@ -63,17 +68,17 @@
 			</div>
 
 			<div class="row">
-				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
-				<div class="squareDivider"></div>
-				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x0y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x1y2" onclick="fieldClick(this.id)" class="field">.</div>
 				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
 				<div class="squareDivider"></div>
-				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
-				<div id="x2y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x3y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x4y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x5y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div class="squareDivider"></div>
+				<div id="x6y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x7y2" onclick="fieldClick(this.id)" class="field">.</div>
+				<div id="x8y2" onclick="fieldClick(this.id)" class="field">.</div>
 			</div>
 
 			<div class="squareDivider"></div>

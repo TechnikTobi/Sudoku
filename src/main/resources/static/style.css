@@ -26,6 +26,14 @@
 	display: inline-block;
 }
 
+#games {
+	visibility: hidden;
+}
+
+#ready {
+	visibility: hidden;
+}
+
 #board {
-	/* visibility: hidden; */
+	visibility: hidden;
 }

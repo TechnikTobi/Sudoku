@@ -1,6 +1,6 @@
 console.log("Sudoku!");
 
-var client;
+var client = null;
 
 var playerID = "";
 var gameID = "";
@@ -25,13 +25,8 @@ function registerPlayer() {
 			playerID = responseData["Data"]["PlayerID"];
 			console.log(playerID);
 
-			// client = Stomp.over(new SockJS("/websocket"));
-			// client.connect({}, function (frame) {
-			// 	client.subscribe("/games", function (message) {showGame(message)});
-			// });
-
 			// Hide registration and show the games
-			document.getElementById("registration").style.visibility = "hidden";
+			document.getElementById("registration").style.visibility = "none";
 			document.getElementById("games").style.visibility = "visible";
 		}
 	}
@@ -39,8 +34,7 @@ function registerPlayer() {
 
 function createGame() {
 	const request = new XMLHttpRequest();
-	const url = "/app/createGame"
-	request.open("POST", url, true);
+	request.open("POST", "/app/createGame", true);
 	request.setRequestHeader("Content-Type", "application/json");
 	JSONdata = JSON.stringify({
 		"PlayerID" : playerID,
@@ -48,16 +42,8 @@ function createGame() {
 		"Difficulty" : Math.max(Math.ceil(document.getElementById("gameDifficulty").value), 0)
 	});
 	request.send(JSONdata);
-
-	// request.onreadystatechange = (event) => {
-	// 	if(request.readyState == 4) {
-	// 		const responseData = JSON.parse(request.responseText);
-	// 		var gameID = responseData["gameID"];
-	// 		console.log(gameID);
-	// 	}
-	// }
 	request.onreadystatechange = (event) => {
-		refreshGames();
+		if(request.readyState == 4) { refreshGames(); }
 	}
 }
 
@@ -78,27 +64,64 @@ function refreshGames() {
 				row.insertCell(0).innerHTML = game["GameID"];
 				row.insertCell(1).innerHTML = game["GameName"];
 				row.insertCell(2).innerHTML = game["MasterID"];
-				row.insertCell(3).innerHTML = game["MasterName"];
+				row.insertCell(3).innerHTML = "<button onClick='joinGame(" + game["GameID"] + ")'>Join</button>";
 			}
 		}
 	}
 }
 
 function showGame(message) {
-	const data = JSON.parse(message.body);
-	console.log("SHOW GAME CALLED");
-	console.log(data);
+	document.getElementById("board").style.visibility = "visible";
+	const json = JSON.parse(message.body);
+	for(let index in json["Data"]["Fields"]) {
+		let field = json["Data"]["Fields"][index];
+		document.getElementById("x" + field["X"] + "y" + field["Y"]).innerHTML = field["Value"];
+		document.getElementById("x" + field["X"] + "y" + field["Y"]).style.background = field["Color"];
+	}
 }
 
-// $('#connect').click(function() {
-// 	client = Stomp.over(new SockJS('/chat'));
-// 	client.connect({}, function (frame) {
-// 		$("#connect").prop("disabled", connected);
-// 		client.subscribe('/topic/messages', function (message) {
-// 			showMessage(JSON.parse(message.body));
-// 		});
-// 	});
-// });
+function joinGame(id) {
+	gameID = id;
+	const request = new XMLHttpRequest();
+	request.open("POST", "/app/game/" + gameID + "/join", true);
+	request.setRequestHeader("Content-Type", "application/json");
+	JSONdata = JSON.stringify({
+		"PlayerID" : playerID,
+		"GameID" : gameID.toString()
+	});
+	request.send(JSONdata);
+
+	request.onreadystatechange = (event) => {
+		if(request.readyState == 4) {
+			if(client == null) {
+				client = Stomp.over(new SockJS("/websocket"));
+				client.connect({}, function (frame) {
+					client.subscribe("/game/" + gameID + "/update", function (message) {showGame(message)});
+				});
+			}
+
+			document.getElementById("games").style.visibility = "none";
+			document.getElementById("ready").style.visibility = "visible";
+		}
+	}
+}
+
+function readyForGame() {
+	const request = new XMLHttpRequest();
+	request.open("POST", "/app/game/" + gameID + "/ready", true);
+	request.setRequestHeader("Content-Type", "application/json");
+	JSONdata = JSON.stringify({
+		"PlayerID" : playerID,
+		"GameID" : gameID.toString()
+	});
+	request.send(JSONdata);
+
+	request.onreadystatechange = (event) => {
+		if(request.readyState == 4) {
+			document.getElementById("ready").style.visibility = "none";
+		}
+	}
+}
 
 function fieldClick(id) {
 	if(selected_x != -1 && selected_y != -1) {
@@ -115,8 +138,6 @@ function fieldClick(id) {
 		selected_x = x_readout;
 		selected_y = y_readout;
 	}
-	console.log(selected_x);
-	console.log(selected_y);
 }
 
 function getFieldID() {
@@ -128,8 +149,15 @@ document.onkeydown = function(evt) {
 	if(parseInt(evt.key) > 0 && parseInt(evt.key) < 10) {
 		if(selected_x != -1 && selected_y != -1) {
 			console.log(selected_x + " " + selected_y + " " + evt.key);
-			document.getElementById(getFieldID()).innerHTML = evt.key;
-			document.getElementById(getFieldID()).style.borderWidth = "0px"
+			//document.getElementById(getFieldID()).innerHTML = evt.key;
+			document.getElementById(getFieldID()).style.boxShadow = "none";
+
+			if(client != null) {
+				client.send("/app/game/" + gameID + "/move", {}, JSON.stringify({
+					
+				}));
+			}
+
 			selected_x = -1;
 			selected_y = -1;
 		}
