@@ -5,6 +5,7 @@ import java.util.Collections;
 import org.prisching.tobias.Sudoku.game.GameController;
 import org.prisching.tobias.Sudoku.game.player.PlayerID;
 import org.prisching.tobias.Sudoku.game.player.PlayerManager;
+import org.prisching.tobias.Sudoku.messages.generator.GameStateResponseGenerator;
 import org.prisching.tobias.Sudoku.messages.outgoing.GameStateResponse;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,7 +30,8 @@ public class SudokuApplication {
 			PlayerManager pm = new PlayerManager();
 			PlayerID pid = pm.addPlayer("tobi");
 			System.out.println((new ObjectMapper()).writeValueAsString(
-					new GameStateResponse(new GameController(pid, "gameName", 45), pm)
+					//new GameStateResponse(new GameController(pid, "gameName", 45), pm)
+					GameStateResponseGenerator.generate(new GameController(pid, "gameName", 45), pm)
 			));
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
