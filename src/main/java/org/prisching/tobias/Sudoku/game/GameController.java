@@ -17,6 +17,7 @@ public class GameController {
 	private final GameID gameID;
 	private final String name;
 	private final PlayerID master;
+	private final int difficulty;
 	
 	private Map<PlayerID, Integer> points;
 	private BoardManager boardManager;
@@ -26,6 +27,7 @@ public class GameController {
 		this.gameID = new GameID();
 		this.name = name;
 		this.master = master;
+		this.difficulty = difficulty;
 		this.points = new HashMap<PlayerID, Integer>();
 		this.boardManager = new BoardManager(difficulty);
 		this.gameState = EGameState.READY;
@@ -41,6 +43,10 @@ public class GameController {
 	
 	public PlayerID getMaster() {
 		return this.master;
+	}
+	
+	public int getDifficulty() {
+		return this.difficulty;
 	}
 	
 	public Map<PlayerID, Integer> getPoints() {
