@@ -58,6 +58,14 @@ public class GameController {
 		return this.boardManager.getPlayBoard();
 	}
 	
+	public int countReadyPlayers() {
+		return this.points.values().stream().filter(p -> p == POINTS_READY).collect(Collectors.toList()).size();
+	}
+	
+	public int countTotalPlayers() {
+		return this.points.size();
+	}
+	
 	public boolean isJoinable() {
 		return this.gameState.equals(EGameState.READY);
 	}
@@ -71,18 +79,11 @@ public class GameController {
 		return this.points.containsKey(id);
 	}
 	
-	/*
-	public boolean startGame(PlayerID playerID) {
-		if(this.master.equals(playerID)) this.gameState = EGameState.ONGOING;
-		return this.gameState.equals(EGameState.ONGOING);
-	}
-	*/
-	
 	public void readyPlayer(PlayerID id) {
 		if(this.points.containsKey(id)) {
 			this.points.put(id, POINTS_READY);
 		}
-		if(this.points.values().stream().filter(p -> p == POINTS_UNREADY).collect(Collectors.toList()).isEmpty()) {
+		if(this.countReadyPlayers() == this.countTotalPlayers()) {
 			this.gameState = EGameState.ONGOING;
 		}
 	}
