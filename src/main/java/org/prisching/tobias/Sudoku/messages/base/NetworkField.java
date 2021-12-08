@@ -1,6 +1,8 @@
 package org.prisching.tobias.Sudoku.messages.base;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public final class NetworkField {
 
@@ -9,7 +11,13 @@ public final class NetworkField {
 	private final int value;
 	private final String color;
 	
-	public NetworkField(int x, int y, int value, String color) {
+	@JsonCreator
+	public NetworkField(
+			@JsonProperty(value = JSONnames.POS_X) int x, 
+			@JsonProperty(value = JSONnames.POS_Y) int y, 
+			@JsonProperty(value = JSONnames.VALUE) int value, 
+			@JsonProperty(value = JSONnames.COLOR) String color
+	) {
 		this.x = x;
 		this.y = y;
 		this.value = value;
