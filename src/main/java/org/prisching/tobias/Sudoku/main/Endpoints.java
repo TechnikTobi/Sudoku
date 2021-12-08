@@ -72,18 +72,6 @@ public class Endpoints {
 			throw new RuntimeException("huhu");
 		}
 		
-		/*
-		GameID newGameID = this.gameControllerManager.createGame(playerID, request.getGameName(), request.getDifficulty());
-		
-		GameController newGame = this.gameControllerManager.getGame(newGameID);
-		String newGameMasterName = this.playerManager.getPlayer(newGame.getMaster()).getName();
-		Response data = new GameCreationResponse(newGameMasterName, newGame);
-		ResponseContainer message = new ResponseContainer(data);
-		
-		this.messagingTemplate.convertAndSend("/games", message);
-		
-		return message;
-		*/
 		this.gameControllerManager.createGame(playerID, request.getGameName(), request.getDifficulty());
 		return generateGamesListAndSend();
 	}
@@ -104,8 +92,6 @@ public class Endpoints {
 		}
 		
 		this.gameControllerManager.getGame(gameID).addPlayer(playerID);
-		
-		//return new ResponseContainer();
 		return generateGamesListAndSend();
 	}
 	
@@ -134,7 +120,6 @@ public class Endpoints {
 			generateGameStateAndSend(gameID);
 		}
 		
-		//return new ResponseContainer();
 		return generateGamesListAndSend();
 	}
 	
