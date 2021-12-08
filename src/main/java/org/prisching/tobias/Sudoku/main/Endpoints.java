@@ -2,6 +2,8 @@ package org.prisching.tobias.Sudoku.main;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.prisching.tobias.Sudoku.board.Field;
+import org.prisching.tobias.Sudoku.board.Position;
 import org.prisching.tobias.Sudoku.game.GameController;
 import org.prisching.tobias.Sudoku.game.GameControllerManager;
 import org.prisching.tobias.Sudoku.game.GameID;
@@ -70,14 +72,20 @@ public class Endpoints {
 			throw new RuntimeException("huhu");
 		}
 		
+		/*
 		GameID newGameID = this.gameControllerManager.createGame(playerID, request.getGameName(), request.getDifficulty());
+		
 		GameController newGame = this.gameControllerManager.getGame(newGameID);
 		String newGameMasterName = this.playerManager.getPlayer(newGame.getMaster()).getName();
 		Response data = new GameCreationResponse(newGameMasterName, newGame);
 		ResponseContainer message = new ResponseContainer(data);
 		
 		this.messagingTemplate.convertAndSend("/games", message);
+		
 		return message;
+		*/
+		this.gameControllerManager.createGame(playerID, request.getGameName(), request.getDifficulty());
+		return generateGamesListAndSend();
 	}
 	
 	@PostMapping(value = "/game/{gameID}/join", consumes = APP_JSON, produces = APP_JSON)
@@ -97,7 +105,8 @@ public class Endpoints {
 		
 		this.gameControllerManager.getGame(gameID).addPlayer(playerID);
 		
-		return new ResponseContainer();
+		//return new ResponseContainer();
+		return generateGamesListAndSend();
 	}
 	
 	@PostMapping(value = "/game/{gameID}/ready", consumes = APP_JSON, produces = APP_JSON)
@@ -125,7 +134,8 @@ public class Endpoints {
 			generateGameStateAndSend(gameID);
 		}
 		
-		return new ResponseContainer();
+		//return new ResponseContainer();
+		return generateGamesListAndSend();
 	}
 	
 	@GetMapping(value = "/getGamesList", produces = APP_JSON)
@@ -134,23 +144,20 @@ public class Endpoints {
 		return new ResponseContainer(data);
 	}
 	
-	// Only for testing
-	@RequestMapping(value = "/game/{gameID}/status", method = RequestMethod.GET, produces = APP_JSON)
-	//@GetMapping(value = "/game/{gameID}/status", produces = APP_JSON)
-	private @ResponseBody ResponseContainer getGameStatus(@PathVariable("gameID") NetworkGameIdentifier netGameID) {
-		GameID gameID = new GameID(netGameID.getIdentifier());
-		if(this.gameControllerManager.getGame(gameID) == null) {
-			throw new RuntimeException("no game with such id existant");
-		}
-		
-		return generateGameStateAndSend(gameID);
+	@MessageMapping(value = "/game/{gameID}/move")
+	private void processMove(@DestinationVariable("gameID") NetworkGameIdentifier netGameID, MoveRequest request) {
+		GameID gameID = new GameID(request.getNetGameID().getIdentifier());
+		PlayerID playerID = new PlayerID(request.getNetPlayerID().getIdentifier());
+		Field field = new Field(new Position(request.getNetField().getX(), request.getNetField().getY()), request.getNetField().getValue());
+		this.gameControllerManager.getGame(gameID).setValue(this.playerManager.getPlayer(playerID), field);
+		generateGameStateAndSend(gameID);
 	}
 	
-	@MessageMapping(value = "/game/{gameID}/move")
-	private void processMove(@DestinationVariable("gameID") NetworkGameIdentifier netGameID) {
-		GameID gameID = new GameID(netGameID.getIdentifier());
-		this.gameControllerManager.getGame(gameID).setValue(null, null, 0);
-		generateGameStateAndSend(gameID);
+	private ResponseContainer generateGamesListAndSend() {
+		Response data = new GamesListResponse(this.gameControllerManager.getAllGames(), this.playerManager.getAllPlayers());
+		ResponseContainer message = new ResponseContainer(data);
+		this.messagingTemplate.convertAndSend("/gamesList", message);
+		return message;
 	}
 	
 	private ResponseContainer generateGameStateAndSend(GameID gameID) {

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.HashMap;
 
 import org.prisching.tobias.Sudoku.board.Board;
+import org.prisching.tobias.Sudoku.board.Field;
 import org.prisching.tobias.Sudoku.board.Position;
 import org.prisching.tobias.Sudoku.game.player.Player;
 import org.prisching.tobias.Sudoku.game.player.PlayerID;
@@ -93,5 +94,9 @@ public class GameController {
 			}
 			if(this.boardManager.isPlayBoardFull()) this.gameState = EGameState.FINISHED;
 		}
+	}
+	
+	public void setValue(Player player, Field field) {
+		this.setValue(player, field.getPos(), field.getValue());
 	}
 }
