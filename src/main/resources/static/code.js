@@ -46,9 +46,6 @@ function createGame() {
 		"Difficulty" : Math.max(Math.ceil(document.getElementById("gameDifficulty").value), 0)
 	});
 	request.send(JSONdata);
-	request.onreadystatechange = (event) => {
-		if(request.readyState == 4) { refreshGames(); }
-	}
 }
 
 function newRefreshGames(message) {
@@ -57,10 +54,11 @@ function newRefreshGames(message) {
 	for(let index in json["Data"]["Games"]) {
 		let game = json["Data"]["Games"][index];
 		var row = document.getElementById("gamesTableBody").insertRow(-1);
-		row.insertCell(0).innerHTML = game["GameID"];
+		row.insertCell(0).innerHTML = game["CreatorName"];
 		row.insertCell(1).innerHTML = game["GameName"];
-		row.insertCell(2).innerHTML = game["MasterID"];
-		row.insertCell(3).innerHTML = "<button onClick='joinGame(" + game["GameID"] + ")'>Join</button>";
+		row.insertCell(2).innerHTML = game["Difficulty"];
+		row.insertCell(3).innerHTML = (game["ReadyPlayers"]).toString() + "/" + (game["TotalPlayers"]).toString();
+		row.insertCell(4).innerHTML = "<button onClick='joinGame(" + game["GameID"] + ")'>Join</button>";
 	}
 }
 
@@ -69,7 +67,8 @@ function showGame(message) {
 	const json = JSON.parse(message.body);
 	for(let index in json["Data"]["Fields"]) {
 		let field = json["Data"]["Fields"][index];
-		document.getElementById("x" + field["X"] + "y" + field["Y"]).innerHTML = field["Value"];
+		let value = parseInt(field["Value"]);
+		document.getElementById("x" + field["X"] + "y" + field["Y"]).innerHTML = (value == 0 ? "&nbsp;" : value);
 		document.getElementById("x" + field["X"] + "y" + field["Y"]).style.backgroundColor = "#" + field["Color"];
 	}
 }
