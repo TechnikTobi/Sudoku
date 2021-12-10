@@ -11,7 +11,6 @@ public final class NetworkPlayerIdentifier {
 	private final String identifier;
 	
 	@JsonCreator
-	//public NetworkPlayerIdentifier(@JsonProperty(value = JSONnames.PLAYER_ID, required = true) String identifier) {
 	public NetworkPlayerIdentifier(String identifier) {
 		this.identifier = NotNullNorEmpty.check(identifier, "Identifier should not be null nor empty");
 	}
