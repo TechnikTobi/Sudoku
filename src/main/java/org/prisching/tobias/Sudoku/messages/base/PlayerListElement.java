@@ -3,6 +3,8 @@ package org.prisching.tobias.Sudoku.messages.base;
 import org.prisching.tobias.Sudoku.game.player.Player;
 import org.prisching.tobias.Sudoku.game.player.PlayerColor;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 public class PlayerListElement {
 	
 	private final Player player;
@@ -13,16 +15,19 @@ public class PlayerListElement {
 		this.points = points;
 	}
 	
+	@JsonGetter(JSONnames.PLAYER_NAME)
 	public String getName() {
 		return this.player.getName();
 	}
 	
+	@JsonGetter(JSONnames.POINTS)
 	public int getPoints() {
 		return this.points;
 	}
 	
-	public PlayerColor getColor() {
-		return this.player.getColor();
+	@JsonGetter(JSONnames.COLOR)
+	public String getColor() {
+		return this.player.getColor().getHexString();
 	}
 	
 }
