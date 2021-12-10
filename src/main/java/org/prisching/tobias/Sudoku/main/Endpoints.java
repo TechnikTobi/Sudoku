@@ -4,12 +4,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.prisching.tobias.Sudoku.board.Field;
 import org.prisching.tobias.Sudoku.board.Position;
-import org.prisching.tobias.Sudoku.game.GameController;
 import org.prisching.tobias.Sudoku.game.GameControllerManager;
 import org.prisching.tobias.Sudoku.game.GameID;
 import org.prisching.tobias.Sudoku.game.player.PlayerID;
 import org.prisching.tobias.Sudoku.game.player.PlayerManager;
 import org.prisching.tobias.Sudoku.messages.base.NetworkGameIdentifier;
+import org.prisching.tobias.Sudoku.messages.base.NetworkPlayerIdentifier;
 import org.prisching.tobias.Sudoku.messages.generator.GameStateResponseGenerator;
 import org.prisching.tobias.Sudoku.messages.incoming.*;
 import org.prisching.tobias.Sudoku.messages.outgoing.*;
@@ -27,11 +27,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -56,7 +54,7 @@ public class Endpoints {
 	@PostMapping(value = "/register", consumes = APP_JSON, produces = APP_JSON)
 	private @ResponseBody ResponseContainer register(@Validated @RequestBody PlayerRegistrationRequest request) {
 		logger.info("Received request: " + request.getPrintString());
-		Response data = new PlayerRegistrationResponse(this.playerManager.addPlayer(request.getPlayerName()));
+		Response data = new PlayerRegistrationResponse(new NetworkPlayerIdentifier(this.playerManager.addPlayer(request.getPlayerName()).getPlayerID()));
 		return new ResponseContainer(data);
 	}
 	
