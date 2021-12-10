@@ -21,7 +21,9 @@ public class JSONnames {
 	public static final String POS_X = "X";
 	public static final String POS_Y = "Y";
 	public static final String VALUE = "Value";
+	
 	public static final String COLOR = "Color";
+	public static final String POINTS = "Points";
 	
 	public static final String SINGLE_FIELD = "Field";
 	public static final String FIELDS = "Fields";
