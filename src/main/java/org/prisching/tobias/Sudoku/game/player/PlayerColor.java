@@ -28,14 +28,15 @@ public class PlayerColor {
         //to get rainbow, pastel colors
         Random random = new Random();
         float hue = random.nextFloat();
-        float saturation = 0.9f;//1.0 for brilliant, 0.0 for dull
-        float luminance = 1.0f; //1.0 for brighter, 0.0 for black
+        float saturation = 0.6f;//1.0 for brilliant, 0.0 for dull
+        float luminance = 0.8f; //1.0 for brighter, 0.0 for black
         color = Color.getHSBColor(hue, saturation, luminance);
 		
 		return new PlayerColor(color.getRed(), color.getGreen(), color.getBlue());
 	}
 	
 	public static PlayerColor getDefaultColor() {
-		return new PlayerColor(255, 255, 255);
+		//return new PlayerColor(255, 255, 255);
+		return new PlayerColor(0, 0, 0);
 	}
 }
