@@ -26,12 +26,22 @@ function registerPlayer() {
 			if(listClient == null) {
 				listClient = Stomp.over(new SockJS("/websocket"));
 				listClient.connect({}, function (frame) {
-					listClient.subscribe("/gamesList", function (message) {newRefreshGames(message)});
+					listClient.subscribe("/gamesList", function (message) {const data = message.body; newRefreshGames(data)});
 				});
 			}
 
-			document.getElementById("registration").style.visibility = "none";
-			document.getElementById("games").style.visibility = "visible";
+			const gamesRequest = new XMLHttpRequest();
+			gamesRequest.open("GET", "/app/getGamesList", true);
+			gamesRequest.send();
+			gamesRequest.onreadystatechange = (event) => {
+				if(gamesRequest.readyState == 4) {
+					console.log(gamesRequest.responseText);
+					newRefreshGames(gamesRequest.responseText);
+				}
+			}
+
+			document.getElementById("registration").style.display = "none";
+			document.getElementById("games").style.display = "block";
 		}
 	}
 }
@@ -48,8 +58,8 @@ function createGame() {
 	request.send(JSONdata);
 }
 
-function newRefreshGames(message) {
-	const json = JSON.parse(message.body);
+function newRefreshGames(data) {
+	const json = JSON.parse(data);
 	document.getElementById("gamesTableBody").innerHTML = "";
 	for(let index in json["Data"]["Games"]) {
 		let game = json["Data"]["Games"][index];
@@ -63,13 +73,22 @@ function newRefreshGames(message) {
 }
 
 function showGame(message) {
-	document.getElementById("board").style.visibility = "visible";
+	document.getElementById("game").style.display = "block";
 	const json = JSON.parse(message.body);
 	for(let index in json["Data"]["Fields"]) {
 		let field = json["Data"]["Fields"][index];
 		let value = parseInt(field["Value"]);
 		document.getElementById("x" + field["X"] + "y" + field["Y"]).innerHTML = (value == 0 ? "&nbsp;" : value);
 		document.getElementById("x" + field["X"] + "y" + field["Y"]).style.backgroundColor = "#" + field["Color"];
+	}
+	document.getElementById("playersTableBody").innerHTML = "";
+	for(let index in json["Data"]["Players"]) {
+		let player = json["Data"]["Players"][index];
+		var row = document.getElementById("playersTableBody").insertRow(-1);
+		var playerNameCell = row.insertCell(0);
+		playerNameCell.innerHTML = player["PlayerName"];
+		playerNameCell.style.color = "#" + player["Color"];
+		row.insertCell(1).innerHTML = player["Points"];
 	}
 }
 
@@ -93,8 +112,8 @@ function joinGame(id) {
 				});
 			}
 
-			document.getElementById("games").style.visibility = "none";
-			document.getElementById("ready").style.visibility = "visible";
+			document.getElementById("games").style.display = "none";
+			document.getElementById("ready").style.display = "block";
 		}
 	}
 }
@@ -111,7 +130,7 @@ function readyForGame() {
 
 	request.onreadystatechange = (event) => {
 		if(request.readyState == 4) {
-			document.getElementById("ready").style.visibility = "none";
+			document.getElementById("ready").style.display = "none";
 		}
 	}
 }
@@ -127,7 +146,7 @@ function fieldClick(id) {
 		selected_x = -1;
 		selected_y = -1;
 	}else{
-		document.getElementById(id).style.boxShadow = "0 0 0.3em black";
+		document.getElementById(id).style.boxShadow = "0 0 0.7em white";
 		selected_x = x_readout;
 		selected_y = y_readout;
 	}
