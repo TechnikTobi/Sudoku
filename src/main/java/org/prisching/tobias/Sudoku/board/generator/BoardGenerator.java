@@ -104,9 +104,9 @@ public class BoardGenerator {
 			}
 			
 			// Select a random position that hasn't been reset
-			Position randomPosition = new Position(random.nextInt(0, Board.MAX_X), random.nextInt(0, Board.MAX_Y));
+			Position randomPosition = new Position(random.nextInt(Board.MAX_X), random.nextInt(Board.MAX_Y));
 			while(resettedPositions.contains(randomPosition)) {
-				randomPosition = new Position(random.nextInt(0, Board.MAX_X), random.nextInt(0, Board.MAX_Y));
+				randomPosition = new Position(random.nextInt(Board.MAX_X), random.nextInt(Board.MAX_Y));
 			}
 			 
 			workingBoard.getField(randomPosition).setValue(Field.EMPTY_FIELD_VALUE);
