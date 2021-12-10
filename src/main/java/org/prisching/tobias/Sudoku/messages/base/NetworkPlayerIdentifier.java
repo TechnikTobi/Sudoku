@@ -4,7 +4,6 @@ import org.prisching.tobias.Sudoku.messages.validation.NotNullNorEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public final class NetworkPlayerIdentifier {
 	
