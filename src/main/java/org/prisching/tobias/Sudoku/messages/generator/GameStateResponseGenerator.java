@@ -29,7 +29,11 @@ public class GameStateResponseGenerator {
 			players = gameController.getPoints()
 				.entrySet()
 				.stream()
-				.map(e -> new PlayerListElement(playerManager.getPlayer(e.getKey()), e.getValue().intValue()))
+				.map(e -> new PlayerListElement(
+						playerManager.getPlayer(e.getKey()).getName(),
+						playerManager.getPlayer(e.getKey()).getColor().getHexString(),
+						e.getValue().intValue())
+				)
 				.collect(Collectors.toList());
 		}
 		
