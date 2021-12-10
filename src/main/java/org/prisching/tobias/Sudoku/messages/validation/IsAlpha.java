@@ -1,7 +1,5 @@
 package org.prisching.tobias.Sudoku.messages.validation;
 
-import java.util.stream.Collectors;
-
 public class IsAlpha {
 
 	private static final String DEFAULT_MESSAGE = "IsAlpha check failed";
