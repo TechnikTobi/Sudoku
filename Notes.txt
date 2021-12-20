@@ -1,18 +1,22 @@
 # For later...
 
+## Spring
 https://spring.io/quickstart
 https://spring.io/guides/gs/messaging-stomp-websocket/
 https://newbedev.com/path-variables-in-spring-websockets-sendto-mapping
 https://github.com/jaysridhar/spring-websocket-server/blob/master/src/main/resources/static/chat.js
 https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications
 
+## Jackson
 http://tutorials.jenkov.com/java-json/jackson-annotations.html
 https://www.baeldung.com/jackson-ignore-null-fields
 https://www.baeldung.com/jpa-size-length-column-differences
 
+## Spring Websocket
 https://www.vertabelo.com/blog/tutorial-how-to-develop-a-simple-tic-tac-toe-game-with-spring-boot-and-angularjs/#spring-boot
 https://www.toptal.com/java/stomp-spring-boot-websocket
 
+## Jackson Problem...
 https://stackoverflow.com/questions/17941403/java-jar-behaving-differently-to-program-run-out-of-ide
 https://stackoverflow.com/questions/70303365/java-jackson-behaves-differently-when-app-run-as-jar-instead-of-from-eclipse?noredirect=1#comment124283403_70303365
 https://stackoverflow.com/questions/53074097/jackson-deserialization-error-no-string-argument-constructor-factory-method-to
@@ -21,4 +25,7 @@ https://stackoverflow.com/questions/53074097/jackson-deserialization-error-no-st
 https://stackoverflow.com/questions/53027883/json-parse-error-cannot-construct-instance-of-com-example-greetapp-domain-user
 https://stackoverflow.com/questions/69215616/spring-boot-jackson-serialization-configuration-not-respected
 https://stackoverflow.com/questions/70303365/java-jackson-behaves-differently-when-app-run-as-jar-instead-of-from-eclipse
+
+## XML
+https://www.javaguides.net/2018/10/how-to-convert-java-object-to-xml-jaxb-marshalling.html
 
