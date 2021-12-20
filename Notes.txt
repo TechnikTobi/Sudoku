@@ -3,6 +3,8 @@
 https://spring.io/quickstart
 https://spring.io/guides/gs/messaging-stomp-websocket/
 https://newbedev.com/path-variables-in-spring-websockets-sendto-mapping
+https://github.com/jaysridhar/spring-websocket-server/blob/master/src/main/resources/static/chat.js
+https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications
 
 http://tutorials.jenkov.com/java-json/jackson-annotations.html
 https://www.baeldung.com/jackson-ignore-null-fields
