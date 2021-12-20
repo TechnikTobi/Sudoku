@@ -1,0 +1,22 @@
+# For later...
+
+https://spring.io/quickstart
+https://spring.io/guides/gs/messaging-stomp-websocket/
+https://newbedev.com/path-variables-in-spring-websockets-sendto-mapping
+
+http://tutorials.jenkov.com/java-json/jackson-annotations.html
+https://www.baeldung.com/jackson-ignore-null-fields
+https://www.baeldung.com/jpa-size-length-column-differences
+
+https://www.vertabelo.com/blog/tutorial-how-to-develop-a-simple-tic-tac-toe-game-with-spring-boot-and-angularjs/#spring-boot
+https://www.toptal.com/java/stomp-spring-boot-websocket
+
+https://stackoverflow.com/questions/17941403/java-jar-behaving-differently-to-program-run-out-of-ide
+https://stackoverflow.com/questions/70303365/java-jackson-behaves-differently-when-app-run-as-jar-instead-of-from-eclipse?noredirect=1#comment124283403_70303365
+https://stackoverflow.com/questions/53074097/jackson-deserialization-error-no-string-argument-constructor-factory-method-to
+https://stackoverflow.com/questions/50921833/json-deserializer-in-spring-boot-entity-with-onetoone-relation
+https://stackoverflow.com/questions/53074097/jackson-deserialization-error-no-string-argument-constructor-factory-method-to
+https://stackoverflow.com/questions/53027883/json-parse-error-cannot-construct-instance-of-com-example-greetapp-domain-user
+https://stackoverflow.com/questions/69215616/spring-boot-jackson-serialization-configuration-not-respected
+https://stackoverflow.com/questions/70303365/java-jackson-behaves-differently-when-app-run-as-jar-instead-of-from-eclipse
+
