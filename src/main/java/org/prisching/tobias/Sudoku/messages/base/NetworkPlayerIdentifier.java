@@ -1,5 +1,6 @@
 package org.prisching.tobias.Sudoku.messages.base;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import org.prisching.tobias.Sudoku.messages.validation.NotNullNorEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -7,14 +8,18 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 public final class NetworkPlayerIdentifier {
 	
-	private final String identifier;
+	private String identifier;
 	
-	@JsonCreator
 	public NetworkPlayerIdentifier(String identifier) {
-		this.identifier = NotNullNorEmpty.check(identifier, "Identifier should not be null nor empty");
+		this.identifier = identifier;
+	}
+
+	@JsonSetter(value = JSONnames.PLAYER_ID)
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 	
-	@JsonGetter(JSONnames.PLAYER_ID)
+	@JsonGetter(value = JSONnames.PLAYER_ID)
 	public String getIdentifier() {
 		return this.identifier;
 	}
