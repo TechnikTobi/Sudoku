@@ -23,6 +23,10 @@
 hs_err_pid*
 /.gradle/
 
+# IDE files
+.idea
+
 # macOS files
 .DS_Store
 /build/
+.DS_Store
