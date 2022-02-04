@@ -3,6 +3,7 @@ package org.prisching.tobias.Sudoku.messages.outgoing;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import org.prisching.tobias.Sudoku.messages.base.JSONnames;
 import org.prisching.tobias.Sudoku.messages.base.NetworkField;
@@ -24,6 +25,7 @@ public class GameStateResponse extends Response {
 	}
 	
 	@JsonGetter(JSONnames.FIELDS)
+	@JsonInclude(JsonInclude.Include.NON_NULL) 
 	public List<NetworkField> getFields() {
 		return this.fields;
 	}

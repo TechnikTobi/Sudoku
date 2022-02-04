@@ -1,5 +1,7 @@
 package org.prisching.tobias.Sudoku.messages.outgoing;
 
+import org.prisching.tobias.Sudoku.messages.base.JSONnames;
+
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -12,7 +14,7 @@ public abstract class Response {
 		this.message = message;
 	}
 	
-	@JsonGetter("Message")
+	@JsonGetter(JSONnames.MESSAGE)
 	public String getMessage() {
 		return this.message;
 	}

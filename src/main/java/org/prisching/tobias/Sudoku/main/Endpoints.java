@@ -90,6 +90,7 @@ public class Endpoints {
 		}
 		
 		this.gameControllerManager.getGame(gameID).addPlayer(playerID);
+		this.generateGameStateAndSend(gameID);
 		return generateGamesListAndSend();
 	}
 	
@@ -118,6 +119,7 @@ public class Endpoints {
 			generateGameStateAndSend(gameID);
 		}
 		
+		this.generateGameStateAndSend(gameID);
 		return generateGamesListAndSend();
 	}
 	
@@ -144,7 +146,7 @@ public class Endpoints {
 	}
 	
 	private ResponseContainer generateGameStateAndSend(GameID gameID) {
-		GameStateResponse data = GameStateResponseGenerator.generate(this.gameControllerManager.getGame(gameID), this.playerManager);
+		GameStateResponse data = GameStateResponseGenerator.generate(this.gameControllerManager.getGame(gameID), this.playerManager, "test");
 		ResponseContainer message = new ResponseContainer(data);
 		this.messagingTemplate.convertAndSend("/game/" + gameID.getGameID() + "/update", message);
 		return message;

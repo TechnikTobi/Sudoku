@@ -17,6 +17,7 @@ public class JSONnames {
 	
 	public static final String DATA = "Data";
 	public static final String ERROR = "ErrorMessage";
+	public static final String MESSAGE = "Message";
 	
 	public static final String POS_X = "X";
 	public static final String POS_Y = "Y";
