@@ -8,6 +8,21 @@ var gameID = "";
 
 var selected_x = -1;
 var selected_y = -1;
+var selected_value = -1;
+
+const selected_shadow = "0 0 0.7em white";
+
+function resetFieldSelected() {
+	selected_x = -1;
+	selected_y = -1;
+}
+
+function resetAllSelected() {
+	resetFieldSelected();
+	selected_value = -1;
+}
+
+// const ding = new Audio("ding.mp3");
 
 // Register player with name via POST request
 function registerPlayer() {
@@ -73,22 +88,29 @@ function newRefreshGames(data) {
 }
 
 function showGame(message) {
-	document.getElementById("game").style.display = "block";
+	// ding.play();
 	const json = JSON.parse(message.body);
-	for(let index in json["Data"]["Fields"]) {
-		let field = json["Data"]["Fields"][index];
-		let value = parseInt(field["Value"]);
-		document.getElementById("x" + field["X"] + "y" + field["Y"]).innerHTML = (value == 0 ? "&nbsp;" : value);
-		document.getElementById("x" + field["X"] + "y" + field["Y"]).style.backgroundColor = "#" + field["Color"];
+	console.log(json);
+	if("Message" in json["Data"]) {
+		document.getElementById("message").innerHTML = json["Data"]["Message"];
 	}
-	document.getElementById("playersTableBody").innerHTML = "";
-	for(let index in json["Data"]["Players"]) {
-		let player = json["Data"]["Players"][index];
-		var row = document.getElementById("playersTableBody").insertRow(-1);
-		var playerNameCell = row.insertCell(0);
-		playerNameCell.innerHTML = player["PlayerName"];
-		playerNameCell.style.color = "#" + player["Color"];
-		row.insertCell(1).innerHTML = player["Points"];
+	if("Fields" in json["Data"]) {
+		document.getElementById("game").style.display = "block";
+		for(let index in json["Data"]["Fields"]) {
+			let field = json["Data"]["Fields"][index];
+			let value = parseInt(field["Value"]);
+			document.getElementById("x" + field["X"] + "y" + field["Y"]).innerHTML = (value == 0 ? "&nbsp;" : value);
+			document.getElementById("x" + field["X"] + "y" + field["Y"]).style.backgroundColor = "#" + field["Color"];
+		}
+		document.getElementById("playersTableBody").innerHTML = "";
+		for(let index in json["Data"]["Players"]) {
+			let player = json["Data"]["Players"][index];
+			var row = document.getElementById("playersTableBody").insertRow(-1);
+			var playerNameCell = row.insertCell(0);
+			playerNameCell.innerHTML = player["PlayerName"];
+			playerNameCell.style.color = "#" + player["Color"];
+			row.insertCell(1).innerHTML = player["Points"];
+		}
 	}
 }
 
@@ -146,9 +168,32 @@ function fieldClick(id) {
 		selected_x = -1;
 		selected_y = -1;
 	}else{
-		document.getElementById(id).style.boxShadow = "0 0 0.7em white";
+		document.getElementById(id).style.boxShadow = selected_shadow;
 		selected_x = x_readout;
 		selected_y = y_readout;
+	}
+	sendMoveToServerIfAllSelected();
+}
+
+function numberClick(id) {
+	if(selected_value != -1) {
+		document.getElementById("n" + selected_value).style.boxShadow = "none";
+	}
+	value_readout = parseInt(id[1]);
+	if(selected_value == value_readout) {
+		selected_value = -1;
+	}else{
+		document.getElementById(id).style.boxShadow = selected_shadow;
+		selected_value = value_readout;
+	}
+	sendMoveToServerIfAllSelected();
+}
+
+function sendMoveToServerIfAllSelected() {
+	if(selected_x != -1 && selected_y != -1 && selected_value != -1) {
+		sendMoveToServer();
+		document.getElementById(getFieldID()).style.boxShadow = "none";
+		resetFieldSelected();
 	}
 }
 
@@ -160,26 +205,25 @@ document.onkeydown = function(evt) {
     evt = evt || window.event;
 	if(parseInt(evt.key) > 0 && parseInt(evt.key) < 10) {
 		if(selected_x != -1 && selected_y != -1) {
-			console.log(selected_x + " " + selected_y + " " + evt.key);
-			value = evt.key;
-			//document.getElementById(getFieldID()).innerHTML = evt.key;
+			selected_value = parseInt(evt.key);
 			document.getElementById(getFieldID()).style.boxShadow = "none";
-
-			if(gameClient != null) {
-				gameClient.send("/app/game/" + gameID + "/move", {}, JSON.stringify({
-					"PlayerID" : playerID,
-					"GameID" : gameID,
-					"Field" : {
-						"X" : selected_x,
-						"Y" : selected_y,
-						"Value" : parseInt(value),
-						"Color" : ""
-					}
-				}));
-			}
-
-			selected_x = -1;
-			selected_y = -1;
+			sendMoveToServer();
+			resetAllSelected();
 		}
 	}
 };
+
+function sendMoveToServer() {
+	if(gameClient != null) {
+		gameClient.send("/app/game/" + gameID + "/move", {}, JSON.stringify({
+			"PlayerID" : playerID,
+			"GameID" : gameID,
+			"Field" : {
+				"X" : selected_x,
+				"Y" : selected_y,
+				"Value" : selected_value,
+				"Color" : ""
+			}
+		}));
+	}
+}
