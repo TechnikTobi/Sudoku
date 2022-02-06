@@ -1,21 +1,24 @@
 package org.prisching.tobias.Sudoku.board.validation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.prisching.tobias.Sudoku.board.Board;
 import org.prisching.tobias.Sudoku.board.BoardInfoExtractor;
 import org.prisching.tobias.Sudoku.board.Field;
 
-import java.util.ArrayList;
+/**
+ * Validates a {@link Board} object by checking if the values within each row of the Sudoku are unique
+ */
+public class BoardValidationRuleRowValues implements IBoardValidationRule {
 
-public class validateRowValues implements IBoardValidationRule {
-	
+	/** {@inheritDoc} */
 	@Override
-	public boolean validatePlayfield(Board playfield) {
+	public boolean validateBoard(Board board) {
 		
-		BoardInfoExtractor extractor = new BoardInfoExtractor(playfield);
+		BoardInfoExtractor extractor = new BoardInfoExtractor(board);
 		for(List<Field> row : extractor.getRows()) {
-			List<Integer> seenValues = new ArrayList<Integer>();
+			List<Integer> seenValues = new ArrayList<>();
 			for(Field field : row) {
 				if(field.getValue() == 0) continue;
 				if(seenValues.contains(field.getValue())) return false;

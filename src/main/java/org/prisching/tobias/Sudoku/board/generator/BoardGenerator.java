@@ -46,7 +46,7 @@ public class BoardGenerator {
 		BoardInfoExtractor extractor = new BoardInfoExtractor(board);
 		
 		// If the board is invalid to begin with, return null
-		if(!BoardValidator.getValidator().validate(board)) return null;
+		if(!BoardValidator.validate(board)) return null;
 		
 		// If there is no empty field, return the board as we are done (and it is already validated!)
 		if(extractor.isFull()) return board;

@@ -33,7 +33,7 @@ public class BoardSolver {
 		BoardInfoExtractor extractor = new BoardInfoExtractor(board);
 
 		// If the board is invalid, return 0. If it is already full (i.e. no more fields to fill) return 1
-		if(!BoardValidator.getValidator().validate(board)) return 0;
+		if(!BoardValidator.validate(board)) return 0;
 		if(extractor.isFull()) return 1;
 
 		// Get the position of the first empty field you can find

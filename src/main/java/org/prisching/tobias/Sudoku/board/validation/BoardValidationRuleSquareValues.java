@@ -7,13 +7,13 @@ import org.prisching.tobias.Sudoku.board.Board;
 import org.prisching.tobias.Sudoku.board.BoardInfoExtractor;
 import org.prisching.tobias.Sudoku.board.Field;
 
-public class validateSquareValues implements IBoardValidationRule {
+public class BoardValidationRuleSquareValues implements IBoardValidationRule {
 
 	@Override
-	public boolean validatePlayfield(Board playfield) {
-		BoardInfoExtractor extractor = new BoardInfoExtractor(playfield);
+	public boolean validateBoard(Board board) {
+		BoardInfoExtractor extractor = new BoardInfoExtractor(board);
 		for(List<Field> square : extractor.getSquares()) {
-			List<Integer> seenValues = new ArrayList<Integer>();
+			List<Integer> seenValues = new ArrayList<>();
 			for(Field field : square) {
 				if(field.getValue() == 0) continue;
 				if(seenValues.contains(field.getValue())) return false;
