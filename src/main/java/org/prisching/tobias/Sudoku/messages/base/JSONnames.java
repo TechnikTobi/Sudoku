@@ -1,5 +1,8 @@
 package org.prisching.tobias.Sudoku.messages.base;
 
+/**
+ * A class holding all JSON key values that are used by the application
+ */
 public class JSONnames {
 
 	public static final String GAME_ID = "GameID";
