@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 public class PlayerRegistrationResponse extends Response {
 
-	private NetworkPlayerIdentifier netPlayerID;
+	private final NetworkPlayerIdentifier netPlayerID;
 	
 	public PlayerRegistrationResponse(NetworkPlayerIdentifier netPlayerID) {
 		this.netPlayerID = netPlayerID;

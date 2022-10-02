@@ -2,6 +2,8 @@ package org.prisching.tobias.Sudoku.main;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.prisching.tobias.Sudoku.*;
+
 import org.prisching.tobias.Sudoku.board.Field;
 import org.prisching.tobias.Sudoku.board.Position;
 import org.prisching.tobias.Sudoku.game.GameControllerManager;
@@ -38,9 +40,9 @@ public class Endpoints {
 
 	private static final String APP_JSON = "application/json";
 	
-	private PlayerManager playerManager;
-	private GameControllerManager gameControllerManager;
-	private Logger logger;
+	private final PlayerManager playerManager;
+	private final GameControllerManager gameControllerManager;
+	private final Logger logger;
 	
 	@Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -82,11 +84,11 @@ public class Endpoints {
 		
 		// Replace with real, proper validation
 		if(this.playerManager.getPlayer(playerID) == null) {
-			throw new RuntimeException("playerID not existant");
+			throw new RuntimeException("playerID not existent");
 		}
 		
 		if(this.gameControllerManager.getGame(gameID) == null) {
-			throw new RuntimeException("gameID not existant");
+			throw new RuntimeException("gameID not existent");
 		}
 		
 		this.gameControllerManager.getGame(gameID).addPlayer(playerID);
@@ -102,11 +104,11 @@ public class Endpoints {
 		
 		// Replace with real, proper validation
 		if(this.playerManager.getPlayer(playerID) == null) {
-			throw new RuntimeException("playerID not existant");
+			throw new RuntimeException("playerID not existent");
 		}
 		
 		if(this.gameControllerManager.getGame(gameID) == null) {
-			throw new RuntimeException("gameID not existant");
+			throw new RuntimeException("gameID not existent");
 		}
 		
 		if(!this.gameControllerManager.getGame(gameID).getPoints().containsKey(playerID)) {
@@ -134,7 +136,7 @@ public class Endpoints {
 		GameID gameID = new GameID(request.getNetGameID().getIdentifier());
 		PlayerID playerID = new PlayerID(request.getNetPlayerID().getIdentifier());
 		Field field = new Field(new Position(request.getNetField().getX(), request.getNetField().getY()), request.getNetField().getValue());
-		this.gameControllerManager.getGame(gameID).setValue(this.playerManager.getPlayer(playerID), field);
+		this.gameControllerManager.getGame(gameID).setFieldValue(this.playerManager.getPlayer(playerID), field);
 		generateGameStateAndSend(gameID);
 	}
 	

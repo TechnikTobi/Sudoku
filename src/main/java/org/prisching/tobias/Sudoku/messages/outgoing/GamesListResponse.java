@@ -13,15 +13,16 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 public class GamesListResponse extends Response {
 	
-	private List<GamesListElement> list;
+	private final List<GamesListElement> list;
 	
 	public GamesListResponse(List<GameController> games, List<Player> players) {
 		this.list = new ArrayList<GamesListElement>();
 		
-		for(GameController game : games) {
-			if(game.isJoinable()) {
-				String masterName = players.stream().filter(p -> p.getID().equals(game.getMaster())).findFirst().get().getName();
-				this.list.add(new GamesListElement(new NetworkGameIdentifier(game.getID().getGameID()), game.getName(), masterName, game.getDifficulty(), game.countReadyPlayers(), game.countTotalPlayers()));
+		for(GameController gameController : games) {
+			if(gameController.isJoinable()) {
+				Player master = players.stream().filter(p -> p.getID().equals(gameController.getMaster())).findFirst().orElse(null);
+				String masterName = (master == null) ? "" : master.getName();
+				this.list.add(new GamesListElement(new NetworkGameIdentifier(gameController.getGame().getGameID().getGameID()), gameController.getGame().getName(), masterName, gameController.getGame().getDifficulty(), gameController.countReadyPlayers(), gameController.countTotalPlayers()));
 			}
 		}
 	}

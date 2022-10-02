@@ -1,7 +1,7 @@
 package org.prisching.tobias.Sudoku.game;
 
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,16 +9,16 @@ import org.prisching.tobias.Sudoku.game.player.PlayerID;
 
 public class GameControllerManager {
 
-	private Map<GameID, GameController> games;
+	private final Map<GameID, GameController> games;
 	
 	public GameControllerManager() {
-		this.games = new HashMap<GameID, GameController>();
+		this.games = new HashMap<>();
 	}
 	
 	public GameID createGame(PlayerID playerID, String name, int difficulty) {
-		GameController newGame = new GameController(playerID, name, difficulty);
-		this.games.put(newGame.getID(), newGame);
-		return newGame.getID();
+		GameController gameController = new GameController(playerID, name, difficulty);
+		this.games.put(gameController.getGame().getGameID(), gameController);
+		return gameController.getGame().getGameID();
 	}
 	
 	public GameController getGame(GameID id) {
@@ -26,7 +26,7 @@ public class GameControllerManager {
 	}
 	
 	public List<GameController> getAllGames() {
-		return this.games.values().stream().collect(Collectors.toList());
+		return new ArrayList<>(this.games.values());
 	}
 	
 }

@@ -7,9 +7,7 @@ import java.sql.Timestamp;
  */
 public class GameID {
 
-	/**
-	 * The identifier, stored as a long integer
-	 */
+	/** The identifier, stored as a long integer */
 	private final long identifier;
 
 	/**
